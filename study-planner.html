@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>400L Study Planner</title>
+<style>
+:root{--bg:#f4f1f8;--card:#fff;--ink:#1f1b2e;--mut:#6a647d;--line:#e2dcee;--acc:#4b3a8c;--accbg:#ebe6f7;--warn:#b3265c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15121f;--card:#1f1b2e;--ink:#eeeaf8;--mut:#a39cbc;--line:#322c47;--acc:#b5a6f2;--accbg:#2b2447;--warn:#f08ab0}}
+:root[data-theme="dark"]{--bg:#15121f;--card:#1f1b2e;--ink:#eeeaf8;--mut:#a39cbc;--line:#322c47;--acc:#b5a6f2;--accbg:#2b2447;--warn:#f08ab0}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1,h2{font-family:"Iowan Old Style",Georgia,serif;font-weight:600;margin:0}
+h1{font-size:26px}
+h2{font-size:19px;margin:22px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sub{color:var(--mut);font-size:14px;margin:2px 0 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
+.row{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:6px solid hsl(var(--h),55%,52%);border-radius:8px;padding:10px 12px;margin:8px 0}
+.row .t{min-width:64px;font-size:14px;color:var(--mut);font-variant-numeric:tabular-nums}
+.row b{display:block}
+.row small,.mut{color:var(--mut);font-size:13px}
+.clash{color:var(--warn);font-size:13px;font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;color:var(--mut);padding:14px 4px;font:inherit;font-size:14px}
+nav button.on{color:var(--acc);font-weight:700;box-shadow:inset 0 3px var(--acc)}
+button.p{background:var(--acc);color:var(--bg);border:0;border-radius:8px;padding:11px 16px;font:inherit;font-weight:600}
+button.g{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px}
+input,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;margin:4px 0 10px}
+label{font-size:14px;color:var(--mut)}
+.rv{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.rv:first-child{border-top:0}
+.rv input{width:22px;height:22px;margin:0;flex:none}
+.rv.d span{text-decoration:line-through;color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--bg);color:var(--ink)}
+.chip.d{background:var(--accbg);color:var(--acc);text-decoration:line-through}
+.chip.o{border-color:var(--warn);color:var(--warn)}
+.bar{height:8px;border-radius:4px;background:var(--accbg);margin-top:6px}
+.bar i{display:block;height:100%;border-radius:4px;background:hsl(var(--h),55%,52%)}
+.steps{margin:0;padding-left:18px}.steps li{margin:6px 0}
+.tm{font:700 64px/1.1 "Iowan Old Style",Georgia,serif;font-variant-numeric:tabular-nums;color:var(--acc);margin:6px 0}
+.ts{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--acc);color:var(--bg);padding:12px 14px;border-radius:10px;display:none;z-index:5}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style></head>
+<body>
+<main>
+<div class="top"><div><h1>400L Study Planner</h1><p class="sub" id="dt"></p></div><button class="g" onclick="theme()">Theme</button></div>
+<div id="v"></div>
+</main>
+<div id="ts" class="ts" role="status" onclick="this.style.display='none'"></div>
+<nav><button data-v="today" onclick="go('today')">Today</button><button data-v="week" onclick="go('week')">Week</button><button data-v="timer" onclick="go('timer')">Timer</button><button data-v="log" onclick="go('log')">Log</button><button data-v="courses" onclick="go('courses')">Courses</button></nav>
+<script>
+const K="jiro-planner-v1";
+const C={
+"417":{n:"Molecular Biology",u:3,t:"Compulsory",h:265},
+
+"418":{n:"Evolution II",u:2,t:"Elective",h:330},
+"419":{n:"Population Genetics",u:3,t:"Elective",h:20},
+"430":{n:"Genetics II",u:4,t:"Compulsory",h:165},
+
+};
+const TU=12;
+const P={
+1:[['19:00','430','Start here'],['20:15','419','Review today’s first class']],
+2:[['17:00','417',''],['19:00','430','']],
+3:[['09:00','430',''],['10:15','417',''],['15:00','418','']],
+4:[['17:00','418',''],['19:00','419','']],
+5:[['14:00','417',''],['16:00','430','']],
+6:[['10:00','430',''],['11:15','419','']],
+0:[['17:00','all','Weekly review: mind map each course from memory']]};
+const M={guide:[['Prime',5,'What is this system solving? Write your own picture or analogy first.'],['Encode',35,'Link each idea to something you know. Past-question topics first.'],['Blurt',5,'Close everything. Dump it as a concept map, then mark the gaps.']],pomo:[['Focus',25,'One topic. Phone away.'],['Break',5,'Stand up, drink water.'],['Focus',25,'Keep going.'],['Break',5,'Stand up.'],['Focus',25,'Keep going.'],['Break',5,'Stand up.'],['Focus',25,'Last one.'],['Long break',15,'You earned it.']]};
+const T={
+1:[[11,13,"419","S023"],[15,18,"430","New Lab"]],
+2:[[8,9,"417","LT026"],[12,13,"419","S023"],[13,15,"418","S023"],[15,16,"430","E304"]],
+3:[],
+4:[[12,13,"417","E304"],[13,14,"418","S023"],[15,16,"430","E303"]],
+5:[[8,10,"417","Lab 305"],[12,13,"430","E303"]]};
+const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const R=[[1,"Flipped test","Answer your own questions or flashcards. No rereading."],[3,"Explain aloud","Teach it to a beginner with no notes."],[7,"Mind map","Draw it from memory and link it to newer topics."],[30,"Self-quiz","Cumulative quiz. Practise elimination for negative marking."]];
+let S={exams:{},logs:[],done:{},mins:{},nf:{}},V="today",TM=null;
+try{const x=JSON.parse(localStorage.getItem(K));if(x)S=Object.assign(S,x)}catch(e){}
+TM=S.tm||null;
+function save(){S.tm=TM;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const add=(s,n)=>{const d=new Date(s+"T00:00:00");d.setDate(d.getDate()+n);return iso(d)};
+const nice=s=>new Date(s+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+const diff=(a,b)=>Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/864e5);
+const hh=h=>pad(h)+":00";
+const clash=(l,x)=>l.some(y=>y!==x&&y[0]<x[1]&&x[0]<y[1]);
+function cls(x,l){const c=C[x[2]];return `<div class="row" style="--h:${c.h}"><span class="t">${hh(x[0])}–${hh(x[1])}</span><div><b>CBG ${x[2]} ${c.n}</b><small>${x[3]}</small>${clash(l,x)?'<div class="clash">Clashes with another class</div>':""}</div></div>`}
+function reviews(){return S.logs.flatMap(l=>R.map(r=>({k:l.id+":"+r[0],due:add(l.d,r[0]),log:l,r})))}
+function revRow(x,t){const dn=S.done[x.k],ov=x.due<t&&!dn;return `<label class="rv ${dn?"d":""}"><input type="checkbox" ${dn?"checked":""} onchange="tog('${x.k}')"><span><b>${x.r[1]}:</b> ${esc(x.log.t)} <small>(CBG ${x.log.c}, ${ov?"overdue since ":"due "}${nice(x.due)})</small><br><small>${x.r[2]}</small></span></label>`}
+function today(){
+const t=iso(new Date()),d=new Date().getDay(),l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]);
+const due=reviews().filter(x=>x.due<=t&&!S.done[x.k]).sort((a,b)=>a.due<b.due?-1:1);
+const ex=Object.entries(S.exams).filter(([c,x])=>x&&x>=t).sort((a,b)=>a[1]<b[1]?-1:1)[0];
+return `${ex?`<div class="card"><b>Next exam: CBG ${ex[0]} ${C[ex[0]].n}</b><div class="mut">${nice(ex[1])}, in ${diff(t,ex[1])} days</div></div>`:`<div class="card"><b>Exams start about ${nice("2027-01-25")}</b><div class="mut">${Math.max(0,diff(t,"2027-01-25"))} days to go. Add exact dates under Courses.</div></div>`}
+<h2>${DAYS[d]}’s classes</h2>${l.length?l.map(x=>cls(x,l)).join(""):'<p class="mut">No classes today. Good day for a long study block.</p>'}
+<h2>Study plan</h2>${slots(d,1)}${mins()}<h2>Reviews due</h2><div class="card">${due.length?due.map(x=>revRow(x,t)).join(""):'<span class="mut">Nothing due. Log what you studied to schedule reviews.</span>'}</div>
+<h2>One study session</h2>${guide()}`}
+function guide(){return `<div class="card"><ol class="steps"><li><b>Prime (5 min).</b> Ask “what is this system solving?” Write your own picture or analogy before opening the notes.</li><li><b>Encode (35 min).</b> Link each idea to something you know. Mix two courses. Start with topics that show up most in past questions.</li><li><b>Blurt (5 min).</b> Close everything and dump it as a concept map. Mark the gaps in a different colour.</li></ol></div>`}
+function week(){return [1,2,3,4,5,6,0].map(d=>{const l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]);return `<h2>${DAYS[d]}</h2>${l.length?l.map(x=>cls(x,l)).join(""):'<p class="mut">No classes.</p>'}${slots(d,0)}`}).join("")}
+function log(){
+const t=iso(new Date());
+const logs=S.logs.slice().reverse().map(l=>`<div class="card"><b>${esc(l.t)}</b><div class="mut">CBG ${l.c}, studied ${nice(l.d)}</div><div class="chips">${R.map(r=>{const k=l.id+":"+r[0],due=add(l.d,r[0]),dn=S.done[k];return `<button class="chip ${dn?"d":due<t?"o":""}" onclick="tog('${k}')">${r[1]} ${nice(due)}</button>`}).join("")}<button class="chip" onclick="del(${l.id})">Delete</button></div></div>`).join("");
+return `<h2>Log a study session</h2><div class="card"><label>Course</label><select id="lc">${Object.keys(C).map(c=>`<option value="${c}">CBG ${c} ${C[c].n}</option>`).join("")}</select><label>Topic</label><input id="lt" placeholder="e.g. DNA replication fork"><label>Date studied</label><input id="ld" type="date" value="${t}"><button class="p" onclick="addLog()">Log and schedule reviews</button></div>${S.logs.length?`<h2>Your topics</h2>${logs}`:'<p class="mut">No sessions logged yet. Each one gets reviews on day 1, 3, 7 and 30.</p>'}<h2>Session routine</h2>${guide()}`}
+function courses(){const t=iso(new Date());return prio()+Object.keys(C).map(c=>{const o=C[c],e=S.exams[c];return `<div class="row" style="--h:${o.h};display:block"><b>CBG ${c} ${o.n}</b><div class="mut">${o.u} units, ${o.t}. About ${Math.round(o.u/TU*100)}% of your study time.</div><div class="bar" style="--h:${o.h}"><i style="width:${o.u/TU*100}%"></i></div><label>Exam date</label><input type="date" value="${e||""}" onchange="ex('${c}',this.value)">${e?`<div class="mut">${e>=t?diff(t,e)+" days to go":"Exam date has passed"}</div>`:""}</div>`}).join("")+`<p class="mut">Total: ${TU} units. Time share is a starting point. Give more to courses you find harder.</p>`}
+function addLog(){const t=$("#lt").value.trim();if(!t){$("#lt").focus();return}S.logs.push({id:Date.now(),c:$("#lc").value,t,d:$("#ld").value||iso(new Date())});save();render()}
+function tog(k){S.done[k]=!S.done[k];save();render()}
+function del(id){S.logs=S.logs.filter(l=>l.id!==id);save();render()}
+function ex(c,v){S.exams[c]=v;save();render()}
+function go(v){V=v;render();scrollTo(0,0)}
+const cn=c=>c==='all'?'All courses':'CBG '+c+' '+C[c].n;
+function slots(d,t){return (P[d]||[]).map(s=>`<div class='row' style='--h:${s[1]==='all'?250:C[s[1]].h}'><span class='t'>${s[0]}</span><div><b>Study: ${cn(s[1])}</b><small>${s[2]||'45-minute guided session'}</small></div>${t&&s[1]!=='all'?`<button class='g' style='margin-left:auto' onclick='startTm(${s[1]})'>Start</button>`:''}</div>`).join('')}
+function mins(){const t=iso(new Date());let w=0;for(let i=0;i<7;i++)w+=S.mins[add(t,-i)]||0;return `<p class='mut'>Studied today: ${S.mins[t]||0} min. Last 7 days: ${w} min.</p>`}
+function prio(){return `<h2>Where to start</h2><div class='card'><ol class='steps'><li><b>CBG 430 Genetics II</b> first. It has the most units and classes have started.</li><li><b>CBG 417 Molecular Biology</b> next. Started last week, 3 units.</li><li><b>CBG 418 Evolution II</b> for steady wins. Only 2 units, so shorter sessions.</li><li><b>CBG 419 Population Genetics</b> last this week. Your first class is today, so review after class instead of reading ahead.</li></ol><p class='mut'>About 13 guided sessions a week plus a Sunday review. Genetics gets the most in week 1. Shift time to Population Genetics as its classes pick up.</p></div>`}
+const fmt=s=>pad(Math.floor(s/60))+':'+pad(s%60);
+function left(){return TM?Math.max(0,Math.round((TM.end-Date.now())/1000)):0}
+function timer(){
+const ok='Notification' in window?Notification.permission:'unsupported';
+let top;
+if(TM){const cur=M[TM.m][TM.i];top=`<div class='mut'>${cn(TM.c)}. ${TM.m==='guide'?'Guided session':'Pomodoro'}, step ${TM.i+1} of ${M[TM.m].length}</div><div class='tm' id='tl'>${fmt(TM.paused?TM.rem:left())}</div><b>${cur[0]}</b><p class='mut'>${cur[2]}</p><input value="${esc(TM.t||'')}" placeholder='Topic (logged when you finish)' oninput='TM.t=this.value;save()'><div class='chips'><button class='p' onclick='pauseTm()'>${TM.paused?'Resume':'Pause'}</button><button class='g' onclick='skipTm()'>Next step</button><button class='g' onclick='stopTm()'>Stop</button></div>`}
+else top=`<label>Course</label><select id='tc'>${Object.keys(C).map(c=>`<option value='${c}' ${c===String(S.lastC||'430')?'selected':''}>CBG ${c} ${C[c].n}</option>`).join('')}</select><label>Topic (logged when you finish)</label><input id='tt' placeholder='e.g. Mendelian ratios'><div class='chips'><button class='p' onclick='startTm()'>Guided session (5 + 35 + 5)</button><button class='g' onclick='startPomo()'>Pomodoro (25 / 5)</button></div>`;
+const al=(ok==='granted'?'Notifications are on. ':ok==='denied'?'Notifications are blocked for this site. ':'')+'You always get a sound, vibration and an on-screen banner when a step ends or a planned study time starts, as long as this page is open.';
+return `<h2>Study timer</h2><div class='card'>${top}</div><div class='card'><b>Alerts</b><p class='mut'>${al}</p><div class='chips'>${ok==='default'?`<button class='p' onclick='askN()'>Turn on notifications</button>`:''}<button class='g' onclick='testA()'>Test alert</button></div></div>`}
+function startTm(c,m){c=String(c||($('#tc')&&$('#tc').value)||'430');m=m||'guide';const t=$('#tt')?$('#tt').value.trim():'';S.lastC=c;TM={c,m,i:0,t,end:Date.now()+M[m][0][1]*60000,paused:false};save();try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}go('timer')}
+function startPomo(){startTm(null,'pomo')}
+function pauseTm(){if(TM.paused){TM.end=Date.now()+TM.rem*1000;TM.paused=false}else{TM.rem=left();TM.paused=true}save();render()}
+function skipTm(){nextTm(false)}
+function stopTm(){TM=null;save();document.title='400L Study Planner';render()}
+function askN(){try{Notification.requestPermission().then(()=>render())}catch(e){}}
+function testA(){alertMe('Test alert','This is how alerts look.')}
+function nextTm(auto){
+const p=M[TM.m][TM.i];
+if(auto&&!/break/i.test(p[0])){const t=iso(new Date());S.mins[t]=(S.mins[t]||0)+p[1]}
+TM.i++;
+if(TM.i>=M[TM.m].length){fin();return}
+const n=M[TM.m][TM.i];TM.end=Date.now()+n[1]*60000;save();
+if(auto)alertMe(n[0]+' ('+n[1]+' min)',n[2]);
+if(V==='timer')render()}
+function fin(){
+const t=TM.t,c=TM.c;TM=null;document.title='400L Study Planner';
+let msg='Session complete. Nice work.';
+if(t){S.logs.push({id:Date.now(),c,t,d:iso(new Date())});msg='Logged “'+t+'”. Your day 1, 3, 7 and 30 reviews are scheduled.'}
+save();alertMe('Session complete',msg);go('timer')}
+function alertMe(t,b){
+try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.15;o.frequency.value=660;o.start();o.stop(a.currentTime+.4)}catch(e){}
+try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
+try{if('Notification' in window&&Notification.permission==='granted')new Notification(t,{body:b})}catch(e){}
+const e=$('#ts');if(e){e.innerHTML='<b>'+esc(t)+'</b><br>'+esc(b);e.style.display='block';setTimeout(()=>{e.style.display='none'},9000)}}
+function tick(){
+if(!TM||TM.paused)return;
+const l=left(),e=$('#tl');
+if(e)e.textContent=fmt(l);
+document.title=fmt(l)+' · 400L Study Planner';
+if(l<=0)nextTm(true)}
+function planCheck(){
+const n=new Date(),t=iso(n),hm=pad(n.getHours())+':'+pad(n.getMinutes());
+(P[n.getDay()]||[]).forEach(s=>{const k=t+s[0];if(s[0]===hm&&!S.nf[k]){S.nf[k]=1;save();alertMe('Time to study',cn(s[1])+(s[2]?'. '+s[2]:''))}})}
+setInterval(tick,1000);setInterval(planCheck,15000);
+function theme(){const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#15121f";r.dataset.theme=d?"light":"dark"}
+function render(){$("#dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===V));$("#v").innerHTML=({today,week,timer,log,courses})[V]()}
+render();
+</script></body></html>
