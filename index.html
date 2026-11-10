@@ -42,15 +42,30 @@ label{font-size:14px;color:var(--mut)}
 .steps{margin:0;padding-left:18px}.steps li{margin:6px 0}
 .tm{font:700 64px/1.1 "Iowan Old Style",Georgia,serif;font-variant-numeric:tabular-nums;color:var(--acc);margin:6px 0}
 .ts{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--acc);color:var(--bg);padding:12px 14px;border-radius:10px;display:none;z-index:5}
+body{background:radial-gradient(900px 420px at 50% -80px,var(--accbg),transparent),var(--bg)}
+.card,.row{box-shadow:0 2px 10px rgba(75,58,140,.1);border-radius:14px}
+#v{animation:fi .3s}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(135deg,#4b3a8c,#c0407a);color:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 20px rgba(75,58,140,.3)}
+.hero b{font-size:19px}.hero p{margin:6px 0 0;opacity:.95}
+.pill{display:inline-block;background:rgba(255,255,255,.22);border-radius:999px;padding:3px 10px;font-size:13px;margin:10px 6px 0 0}
+button{transition:transform .12s}button:active{transform:scale(.93)}
+nav button i{display:block;font-style:normal;font-size:19px}
+nav button{font-size:12px;padding:8px 2px}
+.ring{width:220px;height:220px;margin:8px auto;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .tm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0}
+.fx{position:fixed;pointer-events:none;font-size:26px;z-index:9;animation:up 1.5s ease-out forwards}
+@keyframes up{to{transform:translate(var(--dx),-70vh) rotate(var(--r));opacity:0}}
+.logo{cursor:pointer;display:inline-block;transition:transform .4s}.logo:active{transform:rotate(360deg) scale(1.4)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 </style></head>
 <body>
 <main>
-<div class="top"><div><h1>400L Study Planner</h1><p class="sub" id="dt"></p></div><button class="g" onclick="theme()">Theme</button></div>
+<div class="top"><div><h1><span class="logo" onclick="easter()">🧬</span> 400L Study Planner</h1><p class="sub" id="dt"></p></div><button class="g" onclick="theme()">🌓</button></div>
 <div id="v"></div>
 </main>
 <div id="ts" class="ts" role="status" onclick="this.style.display='none'"></div>
-<nav><button data-v="today" onclick="go('today')">Today</button><button data-v="week" onclick="go('week')">Week</button><button data-v="timer" onclick="go('timer')">Timer</button><button data-v="log" onclick="go('log')">Log</button><button data-v="courses" onclick="go('courses')">Courses</button></nav>
+<nav><button data-v="today" onclick="go('today')"><i>🏠</i>Today</button><button data-v="week" onclick="go('week')"><i>🗓</i>Week</button><button data-v="timer" onclick="go('timer')"><i>⏱</i>Timer</button><button data-v="log" onclick="go('log')"><i>📓</i>Log</button><button data-v="courses" onclick="go('courses')"><i>🧪</i>Courses</button></nav>
 <script>
 const K="jiro-planner-v1";
 const C={
@@ -70,7 +85,7 @@ const P={
 5:[['14:00','417',''],['16:00','430','']],
 6:[['10:00','430',''],['11:15','419','']],
 0:[['17:00','all','Weekly review: mind map each course from memory']]};
-const M={guide:[['Prime',5,'What is this system solving? Write your own picture or analogy first.'],['Encode',35,'Link each idea to something you know. Past-question topics first.'],['Blurt',5,'Close everything. Dump it as a concept map, then mark the gaps.']],pomo:[['Focus',25,'One topic. Phone away.'],['Break',5,'Stand up, drink water.'],['Focus',25,'Keep going.'],['Break',5,'Stand up.'],['Focus',25,'Keep going.'],['Break',5,'Stand up.'],['Focus',25,'Last one.'],['Long break',15,'You earned it.']]};
+const M={guide:[['Prime',5,'What is this system solving? Write your own picture or analogy first. Yes, before opening the notes.'],['Encode',35,'Link each idea to something you know. Past-question topics first. The phone can survive 35 minutes without you.'],['Blurt',5,'Close everything. Dump it as a concept map, then mark the gaps. The gaps are the whole point.']],pomo:[['Focus',25,'One topic. Phone away. Away is not the next tab.'],['Break',5,'Stand up, drink water. Do not open Instagram.'],['Focus',25,'Round two. You are doing fine, annoyingly.'],['Break',5,'Stretch. Blink. Remember you have a body.'],['Focus',25,'Round three. The finish line is rude to ignore.'],['Break',5,'Snack permitted. Doomscrolling is not.'],['Focus',25,'Last one. Make it count.'],['Long break',15,'You earned it. Mostly.']]};
 const T={
 1:[[11,13,"419","S023"],[15,18,"430","New Lab"]],
 2:[[8,9,"417","LT026"],[12,13,"419","S023"],[13,15,"418","S023"],[15,16,"430","E304"]],
@@ -96,39 +111,55 @@ function cls(x,l){const c=C[x[2]];return `<div class="row" style="--h:${c.h}"><s
 function reviews(){return S.logs.flatMap(l=>R.map(r=>({k:l.id+":"+r[0],due:add(l.d,r[0]),log:l,r})))}
 function revRow(x,t){const dn=S.done[x.k],ov=x.due<t&&!dn;return `<label class="rv ${dn?"d":""}"><input type="checkbox" ${dn?"checked":""} onchange="tog('${x.k}')"><span><b>${x.r[1]}:</b> ${esc(x.log.t)} <small>(CBG ${x.log.c}, ${ov?"overdue since ":"due "}${nice(x.due)})</small><br><small>${x.r[2]}</small></span></label>`}
 function today(){
-const t=iso(new Date()),d=new Date().getDay(),l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]);
+const t=iso(new Date()),d=new Date().getDay(),l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]),s=stats();
 const due=reviews().filter(x=>x.due<=t&&!S.done[x.k]).sort((a,b)=>a.due<b.due?-1:1);
 const ex=Object.entries(S.exams).filter(([c,x])=>x&&x>=t).sort((a,b)=>a[1]<b[1]?-1:1)[0];
-return `${ex?`<div class="card"><b>Next exam: CBG ${ex[0]} ${C[ex[0]].n}</b><div class="mut">${nice(ex[1])}, in ${diff(t,ex[1])} days</div></div>`:`<div class="card"><b>Exams start about ${nice("2027-01-25")}</b><div class="mut">${Math.max(0,diff(t,"2027-01-25"))} days to go. Add exact dates under Courses.</div></div>`}
-<h2>${DAYS[d]}’s classes</h2>${l.length?l.map(x=>cls(x,l)).join(""):'<p class="mut">No classes today. Good day for a long study block.</p>'}
-<h2>Study plan</h2>${slots(d,1)}${mins()}<h2>Reviews due</h2><div class="card">${due.length?due.map(x=>revRow(x,t)).join(""):'<span class="mut">Nothing due. Log what you studied to schedule reviews.</span>'}</div>
+const days=ex?diff(t,ex[1]):Math.max(0,diff(t,'2027-01-25'));
+const q=pick(s.today===0?Q.none:s.today<60?Q.some:Q.lots);
+const hr=new Date().getHours(),gr=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+const dq=days>60?'Plenty of time. That is what everyone says.':days>21?'The clock has noticed you.':'Panic is now a valid study technique.';
+return `<div class='hero'><b>${gr}, Jiro 🧬</b><p>${q}</p><span class='pill'>⏱ ${s.today} min today</span><span class='pill'>🔥 ${s.st}-day streak</span><span class='pill'>🧫 ${s.r[1]}</span></div>
+<div class='card'><b>${ex?'Next exam: CBG '+ex[0]+' '+C[ex[0]].n:'Exams start about '+nice('2027-01-25')}</b><div class='mut'>${days} days. ${dq}</div></div>
+<h2>${DAYS[d]}’s classes</h2>${l.length?l.map(x=>cls(x,l)).join(''):"<p class='mut'>No classes today. Enjoy it. Your timetable clearly gave up.</p>"}
+<h2>Study plan</h2>${slots(d,1)}
+<h2>Reviews due${due.length?' ('+due.length+')':''}</h2>${due.length?"<p class='mut'>Your past self scheduled these. Do not let them down.</p>":''}<div class='card'>${due.length?due.map(x=>revRow(x,t)).join(''):"<span class='mut'>Nothing due. Either you are very organised or you have not logged anything. Suspicious.</span>"}</div>
+<h2>Not feeling it?</h2><div class='card'><p class='mut' style='margin-top:0'>Pick your excuse. I have heard them all.</p><div class='chips'>${EX.map((x,i)=>`<button class='chip' onclick='exc(${i})'>${x[0]}</button>`).join('')}</div></div>
 <h2>One study session</h2>${guide()}`}
 function guide(){return `<div class="card"><ol class="steps"><li><b>Prime (5 min).</b> Ask “what is this system solving?” Write your own picture or analogy before opening the notes.</li><li><b>Encode (35 min).</b> Link each idea to something you know. Mix two courses. Start with topics that show up most in past questions.</li><li><b>Blurt (5 min).</b> Close everything and dump it as a concept map. Mark the gaps in a different colour.</li></ol></div>`}
 function week(){return [1,2,3,4,5,6,0].map(d=>{const l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]);return `<h2>${DAYS[d]}</h2>${l.length?l.map(x=>cls(x,l)).join(""):'<p class="mut">No classes.</p>'}${slots(d,0)}`}).join("")}
 function log(){
 const t=iso(new Date());
 const logs=S.logs.slice().reverse().map(l=>`<div class="card"><b>${esc(l.t)}</b><div class="mut">CBG ${l.c}, studied ${nice(l.d)}</div><div class="chips">${R.map(r=>{const k=l.id+":"+r[0],due=add(l.d,r[0]),dn=S.done[k];return `<button class="chip ${dn?"d":due<t?"o":""}" onclick="tog('${k}')">${r[1]} ${nice(due)}</button>`}).join("")}<button class="chip" onclick="del(${l.id})">Delete</button></div></div>`).join("");
-return `<h2>Log a study session</h2><div class="card"><label>Course</label><select id="lc">${Object.keys(C).map(c=>`<option value="${c}">CBG ${c} ${C[c].n}</option>`).join("")}</select><label>Topic</label><input id="lt" placeholder="e.g. DNA replication fork"><label>Date studied</label><input id="ld" type="date" value="${t}"><button class="p" onclick="addLog()">Log and schedule reviews</button></div>${S.logs.length?`<h2>Your topics</h2>${logs}`:'<p class="mut">No sessions logged yet. Each one gets reviews on day 1, 3, 7 and 30.</p>'}<h2>Session routine</h2>${guide()}`}
+return `<h2>Log a study session</h2><div class="card"><label>Course</label><select id="lc">${Object.keys(C).map(c=>`<option value="${c}">CBG ${c} ${C[c].n}</option>`).join("")}</select><label>Topic</label><input id="lt" placeholder="e.g. DNA replication fork"><label>Date studied</label><input id="ld" type="date" value="${t}"><button class="p" onclick="addLog()">Log and schedule reviews</button></div>${S.logs.length?`<h2>Your topics</h2>${logs}`:'<p class="mut">Nothing logged yet. The blank page is judging you. Each one gets reviews on day 1, 3, 7 and 30.</p>'}<h2>Session routine</h2>${guide()}`}
 function courses(){const t=iso(new Date());return prio()+Object.keys(C).map(c=>{const o=C[c],e=S.exams[c];return `<div class="row" style="--h:${o.h};display:block"><b>CBG ${c} ${o.n}</b><div class="mut">${o.u} units, ${o.t}. About ${Math.round(o.u/TU*100)}% of your study time.</div><div class="bar" style="--h:${o.h}"><i style="width:${o.u/TU*100}%"></i></div><label>Exam date</label><input type="date" value="${e||""}" onchange="ex('${c}',this.value)">${e?`<div class="mut">${e>=t?diff(t,e)+" days to go":"Exam date has passed"}</div>`:""}</div>`}).join("")+`<p class="mut">Total: ${TU} units. Time share is a starting point. Give more to courses you find harder.</p>`}
 function addLog(){const t=$("#lt").value.trim();if(!t){$("#lt").focus();return}S.logs.push({id:Date.now(),c:$("#lc").value,t,d:$("#ld").value||iso(new Date())});save();render()}
-function tog(k){S.done[k]=!S.done[k];save();render()}
+function tog(k){S.done[k]=!S.done[k];if(S.done[k])boom();save();render()}
 function del(id){S.logs=S.logs.filter(l=>l.id!==id);save();render()}
 function ex(c,v){S.exams[c]=v;save();render()}
 function go(v){V=v;render();scrollTo(0,0)}
 const cn=c=>c==='all'?'All courses':'CBG '+c+' '+C[c].n;
-function slots(d,t){return (P[d]||[]).map(s=>`<div class='row' style='--h:${s[1]==='all'?250:C[s[1]].h}'><span class='t'>${s[0]}</span><div><b>Study: ${cn(s[1])}</b><small>${s[2]||'45-minute guided session'}</small></div>${t&&s[1]!=='all'?`<button class='g' style='margin-left:auto' onclick='startTm(${s[1]})'>Start</button>`:''}</div>`).join('')}
-function mins(){const t=iso(new Date());let w=0;for(let i=0;i<7;i++)w+=S.mins[add(t,-i)]||0;return `<p class='mut'>Studied today: ${S.mins[t]||0} min. Last 7 days: ${w} min.</p>`}
+function slots(d,t){return (P[d]||[]).map(s=>`<div class='row' style='--h:${s[1]==='all'?250:C[s[1]].h}'><span class='t'>${s[0]}</span><div><b>Study: ${cn(s[1])}</b><small>${s[2]||'45 minutes. The snacks can wait.'}</small></div>${t&&s[1]!=='all'?`<button class='g' style='margin-left:auto' onclick='startTm(${s[1]})'>Start</button>`:''}</div>`).join('')}
+const Q={none:['Zero minutes studied today. Bold strategy.','The textbook will not open itself.','Your future self is already disappointed. Prove them wrong.'],some:['Look at you, doing the thing.','Progress detected. Please remain calm.','Some studying happened. Allegedly.'],lots:['Okay overachiever, drink some water.','Over an hour. Are you feeling alright?','Study legend. The exam is shaking.']};
+const RK=[[0,'Prokaryote'],[60,'Eukaryote'],[300,'Organelle enthusiast'],[600,'Mitochondria'],[1200,'Stem cell'],[2400,'Nobel laureate (pending)']];
+const EX=[['Tomorrow, I promise','Tomorrow-you has a full schedule and also hates you. Do one Pomodoro now.'],['I need to tidy first','Your desk is not the problem. Open the notes.'],['I am too tired','Fair. Do the 5 minute Prime step only. It is never only 5 minutes.'],['Just one reel','The reel has siblings. Close it.'],['I do not get it','Wonderful. That is literally what studying is for.']];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function stats(){const t=iso(new Date());let tot=0,w=0,st=0,r=RK[0];Object.keys(S.mins).forEach(k=>tot+=S.mins[k]);for(let i=0;i<7;i++)w+=S.mins[add(t,-i)]||0;let d=S.mins[t]?t:add(t,-1);while(S.mins[d]>0){st++;d=add(d,-1)}RK.forEach(x=>{if(tot>=x[0])r=x});return{today:S.mins[t]||0,w,tot,st,r}}
+function say(t,b){const e=$('#ts');if(e){e.innerHTML='<b>'+esc(t)+'</b><br>'+esc(b);e.style.display='block';clearTimeout(say.h);say.h=setTimeout(()=>{e.style.display='none'},7000)}}
+function exc(i){say(EX[i][0],EX[i][1])}
+function easter(){say('🧬 Fun fact',pick(['Mitochondria are still the powerhouse. You are still on your phone.','You poked the DNA. It has filed a complaint.','Fun fact: reading this is not studying.']))}
+function boom(){const em=['🧬','🔬','🧫','⭐','🎉','☕'];for(let i=0;i<16;i++){const s=document.createElement('span');s.className='fx';s.textContent=pick(em);s.style.left=(15+Math.random()*70)+'vw';s.style.bottom='20vh';s.style.setProperty('--dx',(Math.random()*160-80)+'px');s.style.setProperty('--r',(Math.random()*720-360)+'deg');s.style.animationDelay=(Math.random()*.3)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),2200)}}
 function prio(){return `<h2>Where to start</h2><div class='card'><ol class='steps'><li><b>CBG 430 Genetics II</b> first. It has the most units and classes have started.</li><li><b>CBG 417 Molecular Biology</b> next. Started last week, 3 units.</li><li><b>CBG 418 Evolution II</b> for steady wins. Only 2 units, so shorter sessions.</li><li><b>CBG 419 Population Genetics</b> last this week. Your first class is today, so review after class instead of reading ahead.</li></ol><p class='mut'>About 13 guided sessions a week plus a Sunday review. Genetics gets the most in week 1. Shift time to Population Genetics as its classes pick up.</p></div>`}
 const fmt=s=>pad(Math.floor(s/60))+':'+pad(s%60);
 function left(){return TM?Math.max(0,Math.round((TM.end-Date.now())/1000)):0}
 function timer(){
 const ok='Notification' in window?Notification.permission:'unsupported';
 let top;
-if(TM){const cur=M[TM.m][TM.i];top=`<div class='mut'>${cn(TM.c)}. ${TM.m==='guide'?'Guided session':'Pomodoro'}, step ${TM.i+1} of ${M[TM.m].length}</div><div class='tm' id='tl'>${fmt(TM.paused?TM.rem:left())}</div><b>${cur[0]}</b><p class='mut'>${cur[2]}</p><input value="${esc(TM.t||'')}" placeholder='Topic (logged when you finish)' oninput='TM.t=this.value;save()'><div class='chips'><button class='p' onclick='pauseTm()'>${TM.paused?'Resume':'Pause'}</button><button class='g' onclick='skipTm()'>Next step</button><button class='g' onclick='stopTm()'>Stop</button></div>`}
-else top=`<label>Course</label><select id='tc'>${Object.keys(C).map(c=>`<option value='${c}' ${c===String(S.lastC||'430')?'selected':''}>CBG ${c} ${C[c].n}</option>`).join('')}</select><label>Topic (logged when you finish)</label><input id='tt' placeholder='e.g. Mendelian ratios'><div class='chips'><button class='p' onclick='startTm()'>Guided session (5 + 35 + 5)</button><button class='g' onclick='startPomo()'>Pomodoro (25 / 5)</button></div>`;
+if(TM){const cur=M[TM.m][TM.i],br=/break/i.test(cur[0]),sec=TM.paused?TM.rem:left(),fr=sec/(TM.dur||sec||1);
+top=`<div class='mut' style='text-align:center'>${cn(TM.c)} · step ${TM.i+1} of ${M[TM.m].length}</div><div class='ring'><svg width='220' height='220' viewBox='0 0 220 220'><circle cx='110' cy='110' r='96' fill='none' stroke='var(--accbg)' stroke-width='14'/><circle id='rg' cx='110' cy='110' r='96' fill='none' stroke='${br?'#2f9e7b':'var(--acc)'}' stroke-width='14' stroke-linecap='round' stroke-dasharray='603.2' stroke-dashoffset='${603.2*fr}' style='transition:stroke-dashoffset 1s linear'/></svg><div class='tm' id='tl'>${fmt(sec)}</div></div><p style='text-align:center;margin:0'><b>${br?'☕':'🧠'} ${cur[0]}</b></p><p class='mut' style='text-align:center'>${cur[2]}</p><input value="${esc(TM.t||'')}" placeholder='Topic (logged when you finish)' oninput='TM.t=this.value;save()'><div class='chips'><button class='p' onclick='pauseTm()'>${TM.paused?'▶ Resume':'⏸ Pause'}</button><button class='g' onclick='skipTm()'>Skip step</button><button class='g' onclick='stopTm()'>Give up</button></div>`}
+else top=`<p class='mut' style='margin-top:0'>Pick a course and a topic. “Everything” is not a topic.</p><label>Course</label><select id='tc'>${Object.keys(C).map(c=>`<option value='${c}' ${c===String(S.lastC||'430')?'selected':''}>CBG ${c} ${C[c].n}</option>`).join('')}</select><label>Topic (logged when you finish)</label><input id='tt' placeholder='e.g. Mendelian ratios'><div class='chips'><button class='p' onclick='startTm()'>🚀 Guided session (5 + 35 + 5)</button><button class='g' onclick='startPomo()'>🍅 Pomodoro (25 / 5)</button></div>`;
 const al=(ok==='granted'?'Notifications are on. ':ok==='denied'?'Notifications are blocked for this site. ':'')+'You always get a sound, vibration and an on-screen banner when a step ends or a planned study time starts, as long as this page is open.';
 return `<h2>Study timer</h2><div class='card'>${top}</div><div class='card'><b>Alerts</b><p class='mut'>${al}</p><div class='chips'>${ok==='default'?`<button class='p' onclick='askN()'>Turn on notifications</button>`:''}<button class='g' onclick='testA()'>Test alert</button></div></div>`}
-function startTm(c,m){c=String(c||($('#tc')&&$('#tc').value)||'430');m=m||'guide';const t=$('#tt')?$('#tt').value.trim():'';S.lastC=c;TM={c,m,i:0,t,end:Date.now()+M[m][0][1]*60000,paused:false};save();try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}go('timer')}
+function startTm(c,m){c=String(c||($('#tc')&&$('#tc').value)||'430');m=m||'guide';const t=$('#tt')?$('#tt').value.trim():'';S.lastC=c;TM={c,m,i:0,t,end:Date.now()+M[m][0][1]*60000,dur:M[m][0][1]*60,paused:false};save();try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}go('timer')}
 function startPomo(){startTm(null,'pomo')}
 function pauseTm(){if(TM.paused){TM.end=Date.now()+TM.rem*1000;TM.paused=false}else{TM.rem=left();TM.paused=true}save();render()}
 function skipTm(){nextTm(false)}
@@ -140,14 +171,14 @@ const p=M[TM.m][TM.i];
 if(auto&&!/break/i.test(p[0])){const t=iso(new Date());S.mins[t]=(S.mins[t]||0)+p[1]}
 TM.i++;
 if(TM.i>=M[TM.m].length){fin();return}
-const n=M[TM.m][TM.i];TM.end=Date.now()+n[1]*60000;save();
+const n=M[TM.m][TM.i];TM.end=Date.now()+n[1]*60000;TM.dur=n[1]*60;save();
 if(auto)alertMe(n[0]+' ('+n[1]+' min)',n[2]);
 if(V==='timer')render()}
 function fin(){
 const t=TM.t,c=TM.c;TM=null;document.title='400L Study Planner';
-let msg='Session complete. Nice work.';
+let msg=pick(['Session complete. The textbook is mildly impressed.','Done. Water. Stretch. Do not open social media.','Another session survived.']);
 if(t){S.logs.push({id:Date.now(),c,t,d:iso(new Date())});msg='Logged “'+t+'”. Your day 1, 3, 7 and 30 reviews are scheduled.'}
-save();alertMe('Session complete',msg);go('timer')}
+boom();save();alertMe('Session complete',msg);go('timer')}
 function alertMe(t,b){
 try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.15;o.frequency.value=660;o.start();o.stop(a.currentTime+.4)}catch(e){}
 try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
@@ -156,7 +187,7 @@ const e=$('#ts');if(e){e.innerHTML='<b>'+esc(t)+'</b><br>'+esc(b);e.style.displa
 function tick(){
 if(!TM||TM.paused)return;
 const l=left(),e=$('#tl');
-if(e)e.textContent=fmt(l);
+if(e)e.textContent=fmt(l);const g=$('#rg');if(g&&TM.dur)g.style.strokeDashoffset=603.2*(l/TM.dur);
 document.title=fmt(l)+' · 400L Study Planner';
 if(l<=0)nextTm(true)}
 function planCheck(){
