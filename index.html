@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>400L Study Planner</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#4b3a8c"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#f4f1f8;--card:#fff;--ink:#1f1b2e;--mut:#6a647d;--line:#e2dcee;--acc:#4b3a8c;--accbg:#ebe6f7;--warn:#b3265c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15121f;--card:#1f1b2e;--ink:#eeeaf8;--mut:#a39cbc;--line:#322c47;--acc:#b5a6f2;--accbg:#2b2447;--warn:#f08ab0}}
@@ -150,7 +151,7 @@ save();alertMe('Session complete',msg);go('timer')}
 function alertMe(t,b){
 try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.15;o.frequency.value=660;o.start();o.stop(a.currentTime+.4)}catch(e){}
 try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
-try{if('Notification' in window&&Notification.permission==='granted')new Notification(t,{body:b})}catch(e){}
+try{if('Notification' in window&&Notification.permission==='granted'){const o={body:b,icon:'icon-192.png'};(navigator.serviceWorker?navigator.serviceWorker.getRegistration():Promise.resolve(null)).then(r=>r?r.showNotification(t,o):new Notification(t,o)).catch(()=>{})}}catch(e){}
 const e=$('#ts');if(e){e.innerHTML='<b>'+esc(t)+'</b><br>'+esc(b);e.style.display='block';setTimeout(()=>{e.style.display='none'},9000)}}
 function tick(){
 if(!TM||TM.paused)return;
@@ -165,4 +166,5 @@ setInterval(tick,1000);setInterval(planCheck,15000);
 function theme(){const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#15121f";r.dataset.theme=d?"light":"dark"}
 function render(){$("#dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===V));$("#v").innerHTML=({today,week,timer,log,courses})[V]()}
 render();
+try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 </script></body></html>
