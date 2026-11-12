@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Study Circle</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3df5"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--bg:#f3f0ff;--card:#fff;--ink:#1b1340;--mut:#6b6290;--line:#e2dcf7;--acc:#5b3df5;--accbg:#e7e1ff;--hot:#e8590c;--warn:#d92d5a}
+@media(prefers-color-scheme:dark){:root{--bg:#120d26;--card:#1c1538;--ink:#efeaff;--mut:#a79fcf;--line:#2f2557;--acc:#a592ff;--accbg:#2b2060;--hot:#ffa04d;--warn:#ff6f91}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top) 0 calc(76px + env(safe-area-inset-bottom))}
+main{max-width:620px;margin:0 auto;padding:16px}
+h1,h2{margin:0;letter-spacing:-.01em}h1{font-size:24px}h2{font-size:18px;margin:22px 0 8px}
+.mut{color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0}
+.me{border-color:var(--acc);background:var(--accbg)}
+.bar{height:6px;background:var(--accbg);border-radius:3px;margin-top:6px}.bar i{display:block;height:100%;background:var(--acc);border-radius:3px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:none;color:var(--mut);padding:14px 4px;font:inherit;font-size:14px}
+nav button.on{color:var(--acc);font-weight:700;box-shadow:inset 0 3px var(--acc)}
+button.p{background:var(--acc);color:var(--bg);border:0;border-radius:8px;padding:11px 16px;font:inherit;font-weight:600}
+button.g{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 12px;font:inherit;font-size:14px}
+button:active{transform:scale(.96)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;margin:4px 0 10px}
+label{font-size:14px;color:var(--mut)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ring{width:230px;height:230px;margin:8px auto;position:relative}.ring svg{transform:rotate(-90deg)}
+.tm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 54px system-ui;font-variant-numeric:tabular-nums;color:var(--acc)}
+.hot{color:var(--hot);font-weight:700}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#ts{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 8px);background:var(--acc);color:var(--bg);padding:12px 14px;border-radius:10px;display:none;z-index:5}
+body{background:radial-gradient(800px 360px at 50% -60px,var(--accbg),transparent),var(--bg)}
+h1{font-size:28px;font-weight:800}h2{font-weight:800}
+.logo{cursor:pointer;display:inline-block;transition:transform .4s}.logo:active{transform:rotate(360deg) scale(1.5)}
+.card{border-radius:16px;box-shadow:0 2px 12px rgba(91,61,245,.1)}
+.hero{background:linear-gradient(135deg,#5b3df5,#ff4f8b);color:#fff;border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 10px 24px rgba(91,61,245,.3)}
+.hero p{margin:6px 0 0}.pill{display:inline-block;background:rgba(255,255,255,.22);border-radius:99px;padding:3px 11px;font-size:13px;margin:10px 6px 0 0}
+.bar i{transition:width .8s}button{transition:transform .12s}
+#v{animation:fi .3s}@keyframes fi{from{opacity:0;transform:translateY(8px)}}
+.fx{position:fixed;pointer-events:none;font-size:26px;z-index:9;animation:up 1.6s ease-out forwards}@keyframes up{to{transform:translate(var(--dx),-70vh) rotate(var(--r));opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#sp{position:fixed;inset:0;z-index:20;background:linear-gradient(135deg,#5b3df5,#ff4f8b);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .5s}
+#sp svg{animation:pu 1s ease-in-out infinite alternate}@keyframes pu{to{transform:scale(1.12)}}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style></head>
+<body>
+<div id="sp"><svg viewBox="0 0 100 100" width="96" height="96" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#fff"/><circle cx="50" cy="50" r="28" fill="none" stroke="#5b3df5" stroke-width="8" stroke-linecap="round" stroke-dasharray="130 46" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="6" fill="#ff4f8b"/></svg><b style="font-size:26px;margin-top:14px">Study Circle</b></div>
+<main><h1 id="hd"><span class="logo" onclick="egg()">🎓</span> Study Circle</h1><p class="mut" id="who"></p><div id="v"></div></main>
+<div id="ts" role="status" onclick="this.style.display='none'"></div>
+<nav id="nav"></nav>
+<script>
+/* ===== SETUP: paste your Supabase values here (see README steps). Leave empty to use the app on this device only. ===== */
+const SB_URL="", SB_KEY="";
+/* ================================================================================================================= */
+const K="study-circle-v1", $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad=n=>String(n).padStart(2,"0"), iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const add=(s,n)=>{const d=new Date(s+"T00:00:00");d.setDate(d.getDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/864e5);
+const fmt=s=>pad(Math.floor(s/60))+":"+pad(s%60), BR=l=>/break|rest/i.test(l), today=()=>iso(new Date());
+const rep=(a,n)=>Array.from({length:n},()=>a).flat();
+const METHODS=[
+ {id:"pomo",name:"Pomodoro 25/5",steps:rep([["Focus",25,"One topic. Phone away."],["Break",5,"Stand up, drink water."]],4)},
+ {id:"5217",name:"52/17",steps:rep([["Focus",52,"Work without switching tasks."],["Break",17,"Fully step away."]],2)},
+ {id:"deep",name:"Deep block 90",steps:[["Deep focus",90,"One hard topic."],["Break",20,"Walk, eat, rest."]]},
+ {id:"recall",name:"Active recall",steps:[["Skim notes",10,"Headings and key terms only."],["Write questions",10,"Turn each heading into a question."],["Answer from memory",20,"Notes closed."],["Check and mark gaps",10,"Circle what you missed."]]},
+ {id:"feyn",name:"Feynman",steps:[["Learn it",15,"Read or watch."],["Explain it",10,"Teach an imaginary beginner."],["Find the gaps",10,"Where did you stumble?"],["Simplify",10,"Redo the weak parts in plain words."]]},
+ {id:"peb",name:"Prime, Encode, Blurt",steps:[["Prime",5,"Write your own picture first."],["Encode",35,"Link each idea to something you know."],["Blurt",5,"Close everything and dump it, then mark gaps."]]}
+];
+const Q={none:["Zero minutes today. Bold strategy.","The textbook will not open itself.","Your future self is already disappointed."],some:["Look at you, doing the thing.","Progress detected. Please remain calm.","Some studying happened. Allegedly."],lots:["Okay overachiever, drink some water.","Over an hour. Are you feeling alright?","The exam is shaking."]};
+const RK=[[0,"Sleepy freshman"],[120,"Highlighter owner"],[600,"Library regular"],[1500,"Past-question hunter"],[3000,"Walking textbook"],[6000,"Dean's list (pending)"]];
+const EX=[["Tomorrow, I promise","Tomorrow-you is busy and resents you. Do one Pomodoro now."],["I need to tidy first","The desk is not the problem. Open the notes."],["I am too tired","Fair. Do just the first step of any method. It is never only one step."],["Just one reel","The reel has siblings. Close it."],["I do not get it","Wonderful. That is what studying is for."]];
+const NUDGE=["Your notes miss you. Awkward.","Study time. The group board is watching.","A small session beats a big plan."];
+const DONE=["Session complete. The textbook is mildly impressed.","Done. Water. Stretch. No doomscrolling.","Another session survived."];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function boom(){const em=["⭐","🎉","📚","🔥","☕","🧠"];for(let i=0;i<16;i++){const s=document.createElement("span");s.className="fx";s.textContent=pick(em);s.style.left=15+Math.random()*70+"vw";s.style.bottom="20vh";s.style.setProperty("--dx",Math.random()*160-80+"px");s.style.setProperty("--r",Math.random()*720-360+"deg");s.style.animationDelay=Math.random()*.3+"s";document.body.appendChild(s);setTimeout(()=>s.remove(),2300)}}
+function egg(){say(pick(["You poked the logo. It filed a complaint.","Fun fact: reading this is not studying.","The group board can see how often you poke this."]))}
+let S={courses:[],as:[],methods:[],sess:[],tm:null,off:0,rem:"",nf:{},days:"0123456"};
+try{Object.assign(S,JSON.parse(localStorage.getItem(K))||{})}catch(e){}
+let TM=S.tm,V="home",sb=null,U=null,P=null,BD=null;
+const save=()=>{S.tm=TM;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const ALL=()=>METHODS.concat(S.methods), cn=id=>(S.courses.find(c=>c.id===id)||{n:"Course"}).n;
+function say(t){const e=$("#ts");e.textContent=t;e.style.display="block";clearTimeout(say.h);say.h=setTimeout(()=>e.style.display="none",6000)}
+
+/* ---------- accounts and shared board ---------- */
+async function init(){
+ if(SB_URL&&SB_KEY&&window.supabase){sb=supabase.createClient(SB_URL,SB_KEY);
+  const{data}=await sb.auth.getSession();U=data.session?data.session.user:null;if(U)await getP()}
+ render()}
+async function getP(){const{data}=await sb.from("profiles").select("name,grp,days").eq("id",U.id).maybeSingle();P=data;if(data&&data.days){S.days=data.days;save()}}
+async function auth(up){
+ const e=$("#e").value.trim(),p=$("#p").value;if(!e||p.length<6)return say("Enter an email and a password of 6+ characters.");
+ if(up){const n=$("#n").value.trim(),g=$("#g").value.trim().toLowerCase();if(!n||!g)return say("Add your name and the group code.");
+  const{data,error}=await sb.auth.signUp({email:e,password:p});if(error)return say(/already/i.test(error.message)?"That email already has an account. Tap Sign in, then change your group on the Board tab.":error.message);
+  if(!data.session)return say("Turn off Confirm email in Supabase, then sign up again.");
+  U=data.user;const r=await sb.from("profiles").upsert({id:U.id,name:n,grp:g,days:S.days});if(r.error)return say(r.error.message);P={name:n,grp:g}}
+ else{const{data,error}=await sb.auth.signInWithPassword({email:e,password:p});if(error)return say(error.message);U=data.user;await getP()}
+ render()}
+async function out(){await sb.auth.signOut();U=P=BD=null;render()}
+const dow=d=>new Date(d+"T00:00:00").getDay();
+function streak(ds,sch,t){let st=0,d=t;for(let i=0;i<400;i++){if(ds.has(d))st++;else if(d!==t&&sch.includes(dow(d)))break;d=add(d,-1)}return st}
+async function loadBoard(){
+ if(!sb||!U||!P)return;const t=today();
+ const{data:pp}=await sb.from("profiles").select("id,name,days").eq("grp",P.grp);
+ const{data:ss}=await sb.from("sessions").select("user_id,day,minutes").in("user_id",(pp||[]).map(x=>x.id)).gte("day",add(t,-90));
+ const l7=[0,1,2,3,4,5,6].map(i=>add(t,-i));
+ BD=(pp||[]).map(p=>{const r=(ss||[]).filter(s=>s.user_id===p.id),ds=new Set(r.map(s=>s.day)),wk=r.filter(s=>s.day>add(t,-7)),sch=(p.days||"0123456").split("").map(Number);
+  const sc=l7.filter(d=>sch.includes(dow(d))).length||7,wd=l7.filter(d=>ds.has(d)).length;
+  return{n:p.name,me:p.id===U.id,st:streak(ds,sch,t),wd,sc,wm:wk.reduce((a,s)=>a+s.minutes,0),ns:wk.length}
+ }).sort((a,b)=>Math.min(1,b.wd/b.sc)-Math.min(1,a.wd/a.sc)||b.st-a.st||b.wm-a.wm);render()}
+async function chg(){const g=$("#ng").value.trim().toLowerCase();if(!g)return say("Type the new group code.");
+ const{error}=await sb.from("profiles").update({grp:g}).eq("id",U.id);if(error)return say(error.message);P.grp=g;BD=null;render();loadBoard();say("Moved to group "+g)}
+async function delMe(){if(!confirm("Delete your account and all your logged sessions? This cannot be undone."))return;
+ const{error}=await sb.rpc("delete_me");if(error)return say(error.message);await sb.auth.signOut({scope:"local"});U=P=BD=null;render();say("Account deleted. You can sign up again.")}
+function daysUI(){const N={1:"Mon",2:"Tue",3:"Wed",4:"Thu",5:"Fri",6:"Sat",0:"Sun"};
+ return `<h2>Your study days</h2><div class="card"><p class="mut" style="margin-top:0">Tap the days you plan to study. Rest days never break your streak.</p><div class="chips">${[1,2,3,4,5,6,0].map(n=>`<button class="${S.days.includes(n)?"p":"g"}" onclick="togDay(${n})">${N[n]}</button>`).join("")}</div></div>`}
+async function togDay(n){const a=new Set(S.days.split("").map(Number));a.has(n)?a.delete(n):a.add(n);if(!a.size)return say("Keep at least one study day.");
+ S.days=[...a].sort().join("");save();render();if(sb&&U)sb.from("profiles").update({days:S.days}).eq("id",U.id)}
+
+/* ---------- priority from assessments ---------- */
+function pri(){const t=today();return S.courses.map(c=>{
+ const T={};S.as.filter(a=>a.c===c.id).forEach(a=>{const k=a.t.toLowerCase(),w=1/(1+Math.max(0,diff(a.d,t))/14),x=T[k]=T[k]||{n:a.t,w:0,s:0};x.w+=w;x.s+=w*(1-a.sc/a.tot)});
+ const tp=Object.values(T).map(x=>({n:x.n,wk:x.s/x.w})).sort((a,b)=>b.wk-a.wk);
+ const wk=tp.length?tp.reduce((a,x)=>a+x.wk,0)/tp.length:.5, dd=c.exam?diff(t,c.exam):null, ur=dd!==null&&dd>=0?1+Math.max(0,30-dd)/10:1;
+ return{c,tp,wk,dd,sc:c.u*wk*ur}}).sort((a,b)=>b.sc-a.sc)}
+function stats(){const t=today(),ds=new Set(S.sess.map(s=>s.d));const st=streak(ds,(S.days||"0123456").split("").map(Number),t);
+ return{min:S.sess.filter(s=>s.d===t).reduce((a,s)=>a+s.min,0),st,tot:S.sess.reduce((a,s)=>a+s.min,0)}}
+
+/* ---------- views ---------- */
+function home(){const s=stats(),p=pri(),r=RK.filter(x=>s.tot>=x[0]).pop(),hr=new Date().getHours(),gr=hr<12?"Good morning":hr<18?"Good afternoon":"Good evening";
+ return `<div class="hero"><b style="font-size:19px">${gr}${P?", "+esc(P.name):""}</b><p>${pick(s.min===0?Q.none:s.min<60?Q.some:Q.lots)}</p><span class="pill">⏱ ${s.min} min today</span><span class="pill">🔥 ${s.st}-day streak</span><span class="pill">🏅 ${r[1]}</span></div><h2>What to study first</h2>`+
+ (p.length?p.map((x,i)=>`<div class="card"><div class="row"><b>${i+1}. ${esc(x.c.n)}</b><span class="mut">${x.c.u} units${x.dd!==null&&x.dd>=0?`, exam in ${x.dd} days`:""}</span></div>
+ <div class="bar"><i style="width:${Math.round(x.wk*100)}%"></i></div>
+ <div class="mut">${x.tp.length?"Weakest: "+x.tp.slice(0,3).map(t=>esc(t.n)+" ("+Math.round((1-t.wk)*100)+"%)").join(", "):"No scores logged yet, so this is a guess. Add an assessment in Courses."}</div></div>`).join("")
+ +`<p class="mut">Priority = units × how weak your recent scores are × how close the exam is. Percentages are your accuracy.</p>`
+ :`<div class="card">Add your courses first, then log an assessment score for each. <div class="chips"><button class="p" onclick="go('courses')">Add courses</button></div></div>`)+excuses()+daysUI()+alerts()}
+function timer(){
+ if(TM){const st=TM.steps[TM.i],sec=TM.paused?TM.rem:left();
+  return `<div class="card" style="text-align:center"><div class="mut">${esc(cn(TM.c))}${TM.t?": "+esc(TM.t):""} · ${esc(TM.name)} · step ${TM.i+1} of ${TM.steps.length}</div>
+  <div class="ring"><svg width="230" height="230" viewBox="0 0 230 230"><circle cx="115" cy="115" r="100" fill="none" stroke="var(--accbg)" stroke-width="12"/><circle id="rg" cx="115" cy="115" r="100" fill="none" stroke="${BR(st[0])?"var(--hot)":"var(--acc)"}" stroke-width="12" stroke-linecap="round" stroke-dasharray="628.3" stroke-dashoffset="${628.3*(1-sec/(st[1]*60))}"/></svg><div class="tm" id="tl">${fmt(sec)}</div></div>
+  <b>${esc(st[0])}</b><p class="mut">${esc(st[2]||"")}</p><div class="chips" style="justify-content:center"><button class="p" onclick="pause()">${TM.paused?"Resume":"Pause"}</button><button class="g" onclick="nxt(0)">Skip step</button><button class="g" onclick="stop()">Stop</button></div></div>`}
+ const L=ALL();
+ return `<h2>Start a session</h2><p class="mut">Pick a course, a topic and a study method. When the session ends, your focus minutes are logged and show on the group board. Breaks do not count.</p><div class="card"><label>Course</label><select id="tc">${S.courses.map(c=>`<option value="${c.id}">${esc(c.n)}</option>`).join("")}</select>
+ <label>Topic</label><input id="tt" list="tl2" placeholder="e.g. DNA replication"><datalist id="tl2">${[...new Set(S.as.map(a=>a.t))].map(t=>`<option value="${esc(t)}">`).join("")}</datalist>
+ <label>Study method</label><select id="tmeth">${L.map(m=>`<option value="${m.id}">${esc(m.name)} (${m.steps.reduce((a,s)=>a+s[1],0)} min)</option>`).join("")}</select>
+ <button class="p" onclick="start()">Start</button></div>
+ <h2>Make your own method</h2><div class="card"><label>Name</label><input id="mn" placeholder="My 40/10"><label>One step per line: name | minutes | tip. A step named Break or Rest counts as a break.</label>
+ <textarea id="ms" rows="4">Focus | 40 | One topic
+Break | 10 | Stretch</textarea><label>Repeat</label><input id="mr" type="number" value="2" min="1" max="10"><button class="g" onclick="addM()">Save method</button>
+ ${S.methods.map(m=>`<div class="row"><span>${esc(m.name)}</span><button class="g" onclick="delM('${m.id}')">Delete</button></div>`).join("")}</div>`}
+function courses(){const t=today();
+ return `<h2>Courses</h2><p class="mut">Add each course and its exam date, then log scores from past questions or tests below. That is how the app knows what you are weak at.</p>${S.courses.map(c=>`<div class="card"><div class="row"><b>${esc(c.n)}</b><button class="g" onclick="delC('${c.id}')">Delete</button></div><div class="mut">${c.u} units</div>
+ <label>Exam date</label><input type="date" value="${c.exam||""}" onchange="setEx('${c.id}',this.value)"></div>`).join("")}
+ <div class="card"><div class="two"><div><label>Course name</label><input id="cn" placeholder="BIO 301"></div><div><label>Units</label><input id="cu" type="number" value="3" min="1"></div></div><button class="p" onclick="addC()">Add course</button></div>
+ <h2>Log an assessment</h2><div class="card"><p class="mut" style="margin-top:0">Use past questions, tests or quizzes. The app turns your score into weakness.</p>
+ <label>Course</label><select id="ac">${S.courses.map(c=>`<option value="${c.id}">${esc(c.n)}</option>`).join("")}</select>
+ <label>Topic covered</label><input id="at" placeholder="e.g. Mendelian ratios"><div class="two"><div><label>Score</label><input id="as" type="number" min="0"></div><div><label>Out of</label><input id="ao" type="number" min="1"></div></div>
+ <label>Date</label><input id="ad" type="date" value="${t}"><button class="p" onclick="addA()">Save assessment</button></div>
+ ${S.as.slice().reverse().slice(0,15).map(a=>`<div class="card row"><span>${esc(a.t)} <span class="mut">${esc(cn(a.c))}, ${a.sc}/${a.tot}, ${a.d}</span></span><button class="g" onclick="delA(${a.id})">Delete</button></div>`).join("")}`}
+function board(){
+ if(!sb)return `<h2>Group board</h2><div class="card">The shared board is off. Paste your Supabase URL and key at the top of index.html to turn it on.</div>`;
+ if(!BD)return `<p class="mut">Loading the board…</p>`;
+ return `<h2>This week in ${esc(P.grp)}</h2><p class="mut">Ranked by how much of their own weekly plan each person hit, then streak. Rest days never break a streak. Minutes are shown but do not decide the order.</p>`+
+ BD.map((b,i)=>`<div class="card ${b.me?"me":""}"><div class="row"><b>${i+1}. ${esc(b.n)}</b><span class="hot">${b.st}-day streak</span></div><div class="mut">${b.wd} of ${b.sc} planned days, ${b.wm} min, ${b.ns} sessions</div>${BD.length>1&&i===BD.length-1?'<div class="mut">Last place. The group chat is waiting.</div>':i===0&&b.wd>0?'<div class="mut">Leading. Humbly, we assume.</div>':""}</div>`).join("")+
+ `<div class="chips"><button class="g" onclick="loadBoard()">Refresh</button><button class="g" onclick="out()">Sign out</button></div><h2>Account</h2><div class="card"><label>Wrong group? Move to another code. Your progress comes with you.</label><input id="ng" placeholder="new group code"><button class="g" onclick="chg()">Change group</button><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><button class="g" style="color:var(--warn)" onclick="delMe()">Delete my account</button></div>`}
+function authV(){return `<div style="text-align:center;margin:18px 0 6px"><svg viewBox="0 0 100 100" width="84" height="84" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#5b3df5"/><circle cx="50" cy="50" r="28" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="130 46" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="6" fill="#ff7ab0"/></svg><h2 style="margin:10px 0 2px">Study Circle</h2><div class="mut">Study together. Get roasted gently.</div></div><div class="card mut" style="font-size:14px"><b>New here?</b> Fill every box and tap Sign up. The group code is made up by the first person, and friends type the same one. <b>Already signed up?</b> Just email and password, then Sign in.</div><div class="card"><label>Email</label><input id="e" type="email" autocomplete="email"><label>Password (you choose it, 6+ characters)</label><div style="position:relative"><input id="p" type="password" autocomplete="current-password" style="padding-right:56px"><button type="button" class="g" aria-label="Show or hide password" style="position:absolute;right:6px;top:8px;padding:3px 10px" onclick="eye()">👁</button></div>
+ <label>Your name (sign up only)</label><input id="n"><label>Group code (sign up only): make one up, friends type the same one</label><input id="g" placeholder="e.g. bio400">
+ <div class="chips"><button class="p" onclick="auth(0)">Sign in</button><button class="g" onclick="auth(1)">Sign up</button><button class="g" onclick="S.off=1;save();render()">Use without a group</button></div></div>`}
+
+/* ---------- actions ---------- */
+const uid=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function addC(){const n=$("#cn").value.trim(),u=+$("#cu").value;if(!n||!(u>0))return say("Add a course name and its units.");S.courses.push({id:uid(),n,u});save();render()}
+function delC(id){S.courses=S.courses.filter(c=>c.id!==id);S.as=S.as.filter(a=>a.c!==id);save();render()}
+function setEx(id,v){S.courses.find(c=>c.id===id).exam=v;save();render()}
+function addA(){const t=$("#at").value.trim(),sc=+$("#as").value,o=+$("#ao").value;if(!$("#ac").value||!t||!(o>0)||$("#as").value===""||sc>o)return say("Fill in the course, topic and a score that is not above the total.");
+ S.as.push({id:Date.now(),c:$("#ac").value,t,sc,tot:o,d:$("#ad").value||today()});const q=sc/o;if(q>=.7)boom();save();render();say(q<.4?"That score hurts. Good, now you know what to study.":q<.7?"Mid. Honest data though, which is the point.":"Look at you. Suspiciously competent.")}
+function delA(id){S.as=S.as.filter(a=>a.id!==id);save();render()}
+function addM(){const n=$("#mn").value.trim(),r=Math.min(10,Math.max(1,+$("#mr").value||1));
+ const st=$("#ms").value.split("\n").map(l=>l.split("|").map(x=>x.trim())).filter(a=>a[0]&&+a[1]>0).map(a=>[a[0],+a[1],a[2]||""]);
+ if(!n||!st.length)return say("Give the method a name and at least one step like: Focus | 25 | tip");
+ S.methods.push({id:uid(),name:n,steps:rep(st,r)});save();render()}
+function delM(id){S.methods=S.methods.filter(m=>m.id!==id);save();render()}
+const left=()=>TM?Math.max(0,Math.round((TM.end-Date.now())/1000)):0;
+function start(){const c=$("#tc").value,m=ALL().find(x=>x.id===$("#tmeth").value);if(!c)return say("Add a course first.");
+ TM={c,name:m.name,steps:m.steps,i:0,t:$("#tt").value.trim(),end:Date.now()+m.steps[0][1]*6e4,paused:0,got:0};save();
+ try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{})}catch(e){}render()}
+function pause(){if(TM.paused){TM.end=Date.now()+TM.rem*1000;TM.paused=0}else{TM.rem=left();TM.paused=1}save();render()}
+function stop(){if(TM.got>0&&confirm("Stop now? Finished focus steps will still be logged.")){fin();return}TM=null;save();document.title="Study Circle";render()}
+function nxt(auto){const s=TM.steps[TM.i];if(auto&&!BR(s[0]))TM.got+=s[1];TM.i++;if(TM.i>=TM.steps.length)return fin();
+ const n=TM.steps[TM.i];TM.end=Date.now()+n[1]*6e4;save();if(auto)ping(n[0]+" ("+n[1]+" min)",n[2]);render()}
+async function fin(){const r={d:today(),min:TM.got,m:TM.name,c:TM.c,t:TM.t};TM=null;document.title="Study Circle";
+ if(r.min>0){S.sess.push(r);if(sb&&U){const e=(await sb.from("sessions").insert({day:r.d,minutes:r.min,method:r.m})).error;if(e)say("Saved here, but the board did not update.")}}
+ save();if(r.min>0)boom();ping("Session finished",r.min>0?r.min+" min logged. "+pick(DONE):"Zero minutes logged. Bold.");render()}
+function ping(t,b){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.15;o.frequency.value=660;o.start();o.stop(a.currentTime+.4)}catch(e){}
+ try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}say(t+": "+b);notify(t,b)}
+function notify(t,b){try{if("Notification" in window&&Notification.permission==="granted"){const o={body:b,icon:"icon-192.png",vibrate:[200,100,200]};
+ (navigator.serviceWorker?navigator.serviceWorker.getRegistration():Promise.resolve()).then(r=>r?r.showNotification(t,o):new Notification(t,o)).catch(()=>{})}}catch(e){}}
+async function askN(){try{await Notification.requestPermission()}catch(e){}render()}
+let IP=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();IP=e;render()});
+function inst(){if(IP){IP.prompt();IP=null;render()}}
+function setRem(v){S.rem=v;save();render()}
+setInterval(()=>{if(!S.rem)return;const n=new Date(),hm=pad(n.getHours())+":"+pad(n.getMinutes()),k=today()+hm;if(hm===S.rem&&!S.nf[k]){S.nf[k]=1;save();ping("Study time",pick(NUDGE))}},15000);
+function excuses(){return `<h2>Not feeling it?</h2><div class="card"><div class="chips">${EX.map((x,i)=>`<button class="g" onclick="say(EX[${i}][0]+': '+EX[${i}][1])">${x[0]}</button>`).join("")}</div></div>`}
+function alerts(){const ok="Notification" in window?Notification.permission:"none",ios=/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone;
+ return `<h2>Install and alerts</h2><div class="card"><div class="chips">${IP?'<button class="p" onclick="inst()">Install app</button>':""}${ok==="default"?'<button class="p" onclick="askN()">Turn on notifications</button>':""}<button class="g" onclick="ping('Test','This is what a nudge looks like.')">Test alert</button></div>
+ <p class="mut">${ok==="granted"?"Notifications are on. ":ok==="denied"?"Notifications are blocked in your browser settings. ":""}${ios?"On iPhone: tap Share, then Add to Home Screen, then open it from there. ":""}Alerts fire when a step ends and at your reminder time, while the app is open or running in the background.</p>
+ <label>Daily reminder time</label><input type="time" value="${S.rem||""}" onchange="setRem(this.value)"></div>`}
+setInterval(()=>{if(!TM||TM.paused)return;const l=left(),e=$("#tl"),g=$("#rg"),st=TM.steps[TM.i];
+ if(e)e.textContent=fmt(l);if(g)g.style.strokeDashoffset=628.3*(1-l/(st[1]*60));document.title=fmt(l)+" Study Circle";if(l<=0)nxt(1)},1000);
+function eye(){const i=$("#p");i.type=i.type==="password"?"text":"password"}
+function go(v){V=v;render();scrollTo(0,0);if(v==="board")loadBoard()}
+function render(){
+ const gated=sb&&!U&&!S.off;$("#hd").style.display=$("#who").style.display=gated?"none":"";
+ $("#who").textContent=P?P.name+" · group "+P.grp:new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+ $("#nav").innerHTML=gated?"":[["home","Priority"],["timer","Timer"],["courses","Courses"],["board","Board"]].map(x=>`<button class="${V===x[0]?"on":""}" onclick="go('${x[0]}')">${x[1]}</button>`).join("");
+ $("#v").innerHTML=gated?authV():({home,timer,courses,board})[V]()}
+init();
+setTimeout(()=>{const s=$("#sp");s.style.opacity=0;setTimeout(()=>s.remove(),550)},1200);
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script></body></html>
