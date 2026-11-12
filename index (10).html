@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>400L Study Planner</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#4b3a8c"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f1f8;--card:#fff;--ink:#1f1b2e;--mut:#6a647d;--line:#e2dcee;--acc:#4b3a8c;--accbg:#ebe6f7;--warn:#b3265c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15121f;--card:#1f1b2e;--ink:#eeeaf8;--mut:#a39cbc;--line:#322c47;--acc:#b5a6f2;--accbg:#2b2447;--warn:#f08ab0}}
+:root[data-theme="dark"]{--bg:#15121f;--card:#1f1b2e;--ink:#eeeaf8;--mut:#a39cbc;--line:#322c47;--acc:#b5a6f2;--accbg:#2b2447;--warn:#f08ab0}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1,h2{font-family:"Iowan Old Style",Georgia,serif;font-weight:600;margin:0}
+h1{font-size:26px}
+h2{font-size:19px;margin:22px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sub{color:var(--mut);font-size:14px;margin:2px 0 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
+.row{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:6px solid hsl(var(--h),55%,52%);border-radius:8px;padding:10px 12px;margin:8px 0}
+.row .t{min-width:64px;font-size:14px;color:var(--mut);font-variant-numeric:tabular-nums}
+.row b{display:block}
+.row small,.mut{color:var(--mut);font-size:13px}
+.clash{color:var(--warn);font-size:13px;font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;color:var(--mut);padding:14px 4px;font:inherit;font-size:14px}
+nav button.on{color:var(--acc);font-weight:700;box-shadow:inset 0 3px var(--acc)}
+button.p{background:var(--acc);color:var(--bg);border:0;border-radius:8px;padding:11px 16px;font:inherit;font-weight:600}
+button.g{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px}
+input,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;margin:4px 0 10px}
+label{font-size:14px;color:var(--mut)}
+.rv{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.rv:first-child{border-top:0}
+.rv input{width:22px;height:22px;margin:0;flex:none}
+.rv.d span{text-decoration:line-through;color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--bg);color:var(--ink)}
+.chip.d{background:var(--accbg);color:var(--acc);text-decoration:line-through}
+.chip.o{border-color:var(--warn);color:var(--warn)}
+.bar{height:8px;border-radius:4px;background:var(--accbg);margin-top:6px}
+.bar i{display:block;height:100%;border-radius:4px;background:hsl(var(--h),55%,52%)}
+.steps{margin:0;padding-left:18px}.steps li{margin:6px 0}
+.tm{font:700 64px/1.1 "Iowan Old Style",Georgia,serif;font-variant-numeric:tabular-nums;color:var(--acc);margin:6px 0}
+.ts{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--acc);color:var(--bg);padding:12px 14px;border-radius:10px;display:none;z-index:5}
+body{background:radial-gradient(900px 420px at 50% -80px,var(--accbg),transparent),var(--bg)}
+.card,.row{box-shadow:0 2px 10px rgba(75,58,140,.1);border-radius:14px}
+#v{animation:fi .3s}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(135deg,#4b3a8c,#c0407a);color:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 20px rgba(75,58,140,.3)}
+.hero b{font-size:19px}.hero p{margin:6px 0 0;opacity:.95}
+.pill{display:inline-block;background:rgba(255,255,255,.22);border-radius:999px;padding:3px 10px;font-size:13px;margin:10px 6px 0 0}
+button{transition:transform .12s}button:active{transform:scale(.93)}
+nav button i{display:block;font-style:normal;font-size:19px}
+nav button{font-size:12px;padding:8px 2px}
+.ring{width:220px;height:220px;margin:8px auto;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .tm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0}
+.fx{position:fixed;pointer-events:none;font-size:26px;z-index:9;animation:up 1.5s ease-out forwards}
+@keyframes up{to{transform:translate(var(--dx),-70vh) rotate(var(--r));opacity:0}}
+.logo{cursor:pointer;display:inline-block;transition:transform .4s}.logo:active{transform:rotate(360deg) scale(1.4)}
+textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;margin:4px 0 10px}
+.chip.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.warn{background:#b3265c;color:#fff;border-radius:12px;padding:10px 14px;margin:8px 0}
+.warn button{margin-left:6px;background:#fff;color:#b3265c;border:0;border-radius:8px;padding:4px 10px;font:inherit;font-size:13px}
+.mito{font-size:54px;position:relative;cursor:pointer;animation:bn 2s ease-in-out infinite alternate}
+.mito small{position:absolute;right:-8px;bottom:-4px;font-size:24px}
+.sp{position:fixed;inset:0;z-index:20;background:linear-gradient(160deg,#4b3a8c,#c0407a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;animation:sf .5s ease 2s forwards}
+.sp .sb{font-size:84px;animation:bn .9s ease-in-out infinite alternate}
+@keyframes bn{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(-14px) rotate(8deg)}}
+@keyframes sf{to{opacity:0;visibility:hidden}}
+.sec summary{font:600 19px "Iowan Old Style",Georgia,serif;margin:18px 0 8px;cursor:pointer;list-style:none}
+.sec summary::-webkit-details-marker{display:none}
+.sec summary::after{content:' ▾';color:var(--mut);font-size:15px}
+.sec[open]>summary::after{content:' ▴'}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style></head>
+<body>
+<main>
+<div class="top"><div><h1><span class="logo" onclick="easter()">🧬</span> 400L Study Planner</h1><p class="sub" id="dt"></p></div><div style="display:flex;gap:6px"><button class="g" onclick="go('settings')">⚙</button><button class="g" onclick="theme()">🌓</button></div></div>
+<div id="v"></div>
+</main>
+<div id="sp" class="sp" onclick="this.remove()"><div class="sb">🧬</div><h1 style="margin:12px 0 4px;font-size:30px">400L Study Planner</h1><p id="sg" style="opacity:.92;max-width:280px">Loading brain cells…</p></div>
+<div id="ts" class="ts" role="status" onclick="this.style.display='none'"></div>
+<nav><button data-v="today" onclick="go('today')"><i>🏠</i>Today</button><button data-v="week" onclick="go('week')"><i>🗓</i>Week</button><button data-v="timer" onclick="go('timer')"><i>⏱</i>Timer</button><button data-v="tools" onclick="go('tools')"><i>🧰</i>Tools</button><button data-v="log" onclick="go('log')"><i>📓</i>Log</button><button data-v="courses" onclick="go('courses')"><i>🧪</i>Courses</button></nav>
+<script>
+const K="jiro-planner-v1";
+const C={
+"417":{n:"Molecular Biology",u:3,t:"Compulsory",h:265},
+
+"418":{n:"Evolution II",u:2,t:"Elective",h:330},
+"419":{n:"Population Genetics",u:3,t:"Elective",h:20},
+"430":{n:"Genetics II",u:4,t:"Compulsory",h:165},
+
+};
+const tu=()=>ac().reduce((a,c)=>a+C[c].u,0);
+const P={
+1:[['19:00','430',''],['20:15','419','']],
+2:[['17:00','417',''],['19:00','430','']],
+3:[['09:00','430',''],['10:15','417',''],['15:00','418','']],
+4:[['17:00','418',''],['19:00','419','']],
+5:[['14:00','417',''],['16:00','430','']],
+6:[['10:00','430',''],['11:15','419','']],
+0:[['17:00','all','Weekly review: mind map each course from memory']]};
+const M={guide:[['Prime',5,'What is this system solving? Write your own picture or analogy first. Yes, before opening the notes.'],['Encode',35,'Link each idea to something you know. Past-question topics first. The phone can survive 35 minutes without you.'],['Blurt',5,'Close everything. Dump it as a concept map, then mark the gaps. The gaps are the whole point.']],r1:[['Flipped test',10,'Answer your own questions or cards from memory. No notes. No peeking.']],r3:[['Explain aloud',5,'Teach it to an imaginary beginner. Out loud. Yes, really.']],r7:[['Mind map',15,'Draw it from memory. Link it to what you have learned since.']],r30:[['Self-quiz',20,'Quiz yourself across the whole topic. Practise elimination.']],week:[['Weekly review',30,'Mind map each course from memory, then list what to fix.']],mini:[['Prime',2,'Write one sentence on what this topic is about. No notes.'],['Encode',10,'One section only. Link it to something you know.'],['Blurt',3,'Close it. Write what you remember. Mark the gaps.']],pomo:[['Focus',25,'One topic. Phone away. Away is not the next tab.'],['Break',5,'Stand up, drink water. Do not open Instagram.'],['Focus',25,'Round two. You are doing fine, annoyingly.'],['Break',5,'Stretch. Blink. Remember you have a body.'],['Focus',25,'Round three. The finish line is rude to ignore.'],['Break',5,'Snack permitted. Doomscrolling is not.'],['Focus',25,'Last one. Make it count.'],['Long break',15,'You earned it. Mostly.']]};
+const T={
+1:[[11,13,"419","S023"],[15,18,"430","New Lab"]],
+2:[[8,9,"417","LT026"],[12,13,"419","S023"],[13,15,"418","S023"],[15,16,"430","E304"]],
+3:[],
+4:[[12,13,"417","E304"],[13,14,"418","S023"],[15,16,"430","E303"]],
+5:[[8,10,"417","Lab 305"],[12,13,"430","E303"]]};
+const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const R=[[1,"Flipped test","Answer your own questions or flashcards. No rereading."],[3,"Explain aloud","Teach it to a beginner with no notes."],[7,"Mind map","Draw it from memory and link it to newer topics."],[30,"Self-quiz","Cumulative quiz. Practise elimination for negative marking."]];
+let S={exams:{},logs:[],done:{},mins:{},nf:{},cards:[],blurts:[],drills:[],notes:[],pqs:[],topics:{},fb:[]},V="today",TM=null,TV="cards",DR=null,CR=null,LR=null,PR=null,SEL='';
+try{const x=JSON.parse(localStorage.getItem(K));if(x)S=Object.assign(S,x)}catch(e){}
+TM=S.tm||null;
+function save(){S.tm=TM;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const add=(s,n)=>{const d=new Date(s+"T00:00:00");d.setDate(d.getDate()+n);return iso(d)};
+const nice=s=>new Date(s+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+const diff=(a,b)=>Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/864e5);
+const hh=h=>pad(h)+":00";
+const clash=(l,x)=>l.some(y=>y!==x&&y[0]<x[1]&&x[0]<y[1]);
+function cls(x,l){const c=C[x[2]];return `<div class="row" style="--h:${c.h}"><span class="t">${hh(x[0])}–${hh(x[1])}</span><div><b>CBG ${x[2]} ${c.n}</b><small>${x[3]}</small>${clash(l,x)?'<div class="clash">Clashes with another class</div>':""}</div></div>`}
+function reviews(){return S.logs.flatMap(l=>R.map(r=>({k:l.id+":"+r[0],due:(S.rd&&S.rd[l.id+":"+r[0]])||add(l.d,r[0]),log:l,r})))}
+function revRow(x,t){const dn=S.done[x.k],ov=x.due<t&&!dn;return `<div class="rv ${dn?"d":""}"><span style="flex:1"><b>${x.r[1]}:</b> ${esc(x.log.t)} <small>(CBG ${x.log.c}, ${ov?"overdue since ":"due "}${nice(x.due)})</small><br><small>${x.r[2]} · ${M["r"+x.r[0]][0][1]} min</small></span><button class="g" onclick="startRv('${x.k}')">▶</button><button class="g" onclick="rvAsk('${x.k}')">✓</button></div>`}
+function today(){
+const t=iso(new Date()),d=new Date().getDay(),l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]),s=stats();
+const due=reviews().filter(x=>x.due<=t&&!S.done[x.k]).sort((a,b)=>a.due<b.due?-1:1);
+const ex=Object.entries(S.exams).filter(([c,x])=>x&&x>=t).sort((a,b)=>a[1]<b[1]?-1:1)[0];
+const days=ex?diff(t,ex[1]):Math.max(0,diff(t,'2027-01-25')),m=mito(s);
+const hr=new Date().getHours(),gr=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+return `<div class='hero'><div style='display:flex;gap:12px;align-items:center'><div class='mito' onclick='mt()'>🫘<small>${m[0]}</small></div><div><b>${gr}, Jiro</b><p id='mq'>${m[1]}</p></div></div><span class='pill'>⏱ ${s.today} min</span><span class='pill'>🔥 ${s.st}-day streak</span><span class='pill'>🧫 ${s.r[1]}</span><span class='pill'>📅 ${days} days to exams</span></div>${banner()}${nextUp(d)}<div class='chips' style='margin:0 0 8px'><button class='chip' onclick='go("log")'>📝 Log feedback</button></div>${cdue()}${sec('📖 This week’s reading',readNow(),1)}${sec('🏫 '+DAYS[d]+'’s classes',l.length?l.map(x=>cls(x,l)).join(''):"<p class='mut'>No classes today. Enjoy it. Your timetable clearly gave up.</p>")}${sec('🗓 Study plan',slots(d,1)||"<p class='mut'>Nothing planned. Bold.</p>")}${sec('🎯 Needs work',weak(),1)}${sec('🔁 Reviews due'+(due.length?' ('+due.length+')':''),(due.length?"<p class='mut'>Your past self scheduled these. Do not let them down.</p>":'')+"<div class='card'>"+(due.length?(due.length>5?due.slice().sort(rk2).slice(0,5):due).map(x=>revRow(x,t)).join('')+(due.length>5?"<p class='mut'>"+(due.length-5)+" more waiting.</p><button class='g' onclick='spread()'>Spread the rest over the next few days</button>":''):"<span class='mut'>Nothing due. Either you are very organised or you have not logged anything. Suspicious.</span>")+'</div>',1)}${sec('🤥 Not feeling it?',"<div class='card'><p class='mut' style='margin-top:0'>Pick your excuse. I have heard them all.</p><div class='chips'>"+EX.map((x,i)=>`<button class='chip' onclick='exc(${i})'>${x[0]}</button>`).join('')+'</div></div>')}${sec('🧠 One study session',guide())}`}
+function guide(){return `<div class="card"><ol class="steps"><li><b>Prime (5 min).</b> Ask “what is this system solving?” Write your own picture or analogy before opening the notes.</li><li><b>Encode (35 min).</b> Link each idea to something you know. Mix two courses. Start with topics that show up most in past questions.</li><li><b>Blurt (5 min).</b> Close everything and dump it as a concept map. Mark the gaps in a different colour.</li></ol></div>`}
+function week(){return [1,2,3,4,5,6,0].map(d=>{const l=(T[d]||[]).slice().sort((a,b)=>a[0]-b[0]);return `<h2>${DAYS[d]}</h2>${l.length?l.map(x=>cls(x,l)).join(""):'<p class="mut">No classes.</p>'}${slots(d,0)}`}).join("")}
+function log(){
+const t=iso(new Date());
+const logs=S.logs.slice().reverse().map(l=>`<div class="card"><b>${esc(l.t)}</b><div class="mut">CBG ${l.c}, studied ${nice(l.d)}</div>${trend(l)}<div class="chips"><span class="mut" style="align-self:center">Confidence</span>${[1,2,3,4,5].map(n=>`<button class="chip ${l.cf===n?'on':''}" onclick="cf(${l.id},${n})">${n}</button>`).join("")}</div><div class="chips">${R.map(r=>{const k=l.id+":"+r[0],due=(S.rd&&S.rd[k])||add(l.d,r[0]),dn=S.done[k];return `<button class="chip ${dn?"d":due<t?"o":""}" onclick="tog('${k}')">${r[1]} ${nice(due)}</button>`}).join("")}<button class="chip" onclick="del(${l.id})">Delete</button></div></div>`).join("");
+return `${fbForm()}<h2>Log a study session</h2><div class="card"><label>Course</label><select id="lc">${ac().map(c=>`<option value="${c}">CBG ${c} ${C[c].n}</option>`).join("")}</select><label>Topic</label><input id="lt" placeholder="e.g. DNA replication fork"><label>Date studied</label><input id="ld" type="date" value="${t}"><button class="p" onclick="addLog()">Log and schedule reviews</button></div>${S.logs.length?`<h2>Your topics</h2>${logs}`:'<p class="mut">Nothing logged yet. The blank page is judging you. Each one gets reviews on day 1, 3, 7 and 30.</p>'}<h2>Session routine</h2>${guide()}`}
+function courses(){const t=iso(new Date());return prio()+ac().map(c=>{const o=C[c],e=S.exams[c];return `<div class="row" style="--h:${o.h};display:block"><b>CBG ${c} ${o.n}</b><div class="mut">${o.u} units, ${o.t}. About ${Math.round(o.u/tu()*100)}% of your study time.</div><div class="bar" style="--h:${o.h}"><i style="width:${o.u/tu()*100}%"></i></div><label>Course outline: topics, one per line</label><textarea rows='4' onchange='tpc("${c}",this.value)'>${esc((S.topics&&S.topics[c]||[]).join("\n"))}</textarea><label>Exam date</label><input type="date" value="${e||""}" onchange="ex('${c}',this.value)">${e?`<div class="mut">${e>=t?diff(t,e)+" days to go":"Exam date has passed"}</div>`:""}</div>`}).join("")+`<h2>Reading plan</h2>${readPlan()}<p class="mut">Total: ${tu()} units. Time share is a starting point. Give more to courses you find harder.</p>`}
+function addLog(){const t=$("#lt").value.trim();if(!t){$("#lt").focus();return}S.logs.push({id:Date.now(),c:$("#lc").value,t,d:$("#ld").value||iso(new Date())});save();render()}
+function tog(k){S.done[k]=!S.done[k];if(S.done[k])boom();save();render()}
+function del(id){S.logs=S.logs.filter(l=>l.id!==id);save();render()}
+function ex(c,v){S.exams[c]=v;save();render()}
+function go(v){V=v;render();scrollTo(0,0)}
+const cn=c=>c==='all'?'All courses':'CBG '+c+(C[c]?' '+C[c].n:'');
+function slots(d,t){return gp(d).map(s=>`<div class='row' style='--h:${s[1]==='all'?250:C[s[1]].h}'><span class='t'>${s[0]}</span><div><b>Study: ${cn(s[1])}</b><small>${s[2]||'45 minutes. The snacks can wait.'}</small></div>${t?`<button class='g' style='margin-left:auto' onclick='${s[1]==='all'?'startWk()':'startTm('+s[1]+')'}'>Start</button>`:''}</div>`).join('')}
+const Q={none:['Zero minutes studied today. Bold strategy.','The textbook will not open itself.','Your future self is already disappointed. Prove them wrong.'],some:['Look at you, doing the thing.','Progress detected. Please remain calm.','Some studying happened. Allegedly.'],lots:['Okay overachiever, drink some water.','Over an hour. Are you feeling alright?','Study legend. The exam is shaking.']};
+const RK=[[0,'Prokaryote'],[60,'Eukaryote'],[300,'Organelle enthusiast'],[600,'Mitochondria'],[1200,'Stem cell'],[2400,'Nobel laureate (pending)']];
+const EX=[['Tomorrow, I promise','Tomorrow-you has a full schedule and also hates you. Do one Pomodoro now.'],['I need to tidy first','Your desk is not the problem. Open the notes.'],['I am too tired','Fair. Do the 5 minute Prime step only. It is never only 5 minutes.'],['Just one reel','The reel has siblings. Close it.'],['I do not get it','Wonderful. That is literally what studying is for.']];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function stats(){const t=iso(new Date());let tot=0,w=0,st=0,r=RK[0];Object.keys(S.mins).forEach(k=>tot+=S.mins[k]);for(let i=0;i<7;i++)w+=S.mins[add(t,-i)]||0;let d=S.mins[t]?t:add(t,-1);while(S.mins[d]>0){st++;d=add(d,-1)}RK.forEach(x=>{if(tot>=x[0])r=x});return{today:S.mins[t]||0,w,tot,st,r}}
+function say(t,b){const e=$('#ts');if(e){e.innerHTML='<b>'+esc(t)+'</b><br>'+esc(b);e.style.display='block';clearTimeout(say.h);say.h=setTimeout(()=>{e.style.display='none'},7000)}}
+function exc(i){say(EX[i][0],EX[i][1])}
+function easter(){say('🧬 Fun fact',pick(['Mitochondria are still the powerhouse. You are still on your phone.','You poked the DNA. It has filed a complaint.','Fun fact: reading this is not studying.']))}
+function boom(){const em=['🧬','🔬','🧫','⭐','🎉','☕'];for(let i=0;i<16;i++){const s=document.createElement('span');s.className='fx';s.textContent=pick(em);s.style.left=(15+Math.random()*70)+'vw';s.style.bottom='20vh';s.style.setProperty('--dx',(Math.random()*160-80)+'px');s.style.setProperty('--r',(Math.random()*720-360)+'deg');s.style.animationDelay=(Math.random()*.3)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),2200)}}
+function prio(){const t=iso(new Date()),r=ac().map(c=>{const e=S.exams[c];return{c,u:C[c].u,wk:S.logs.filter(l=>l.c===c&&(!l.cf||l.cf<=3)).length,dd:e&&e>=t?diff(t,e):null}}).sort((a,b)=>(a.dd===null)-(b.dd===null)||(a.dd||0)-(b.dd||0)||b.wk-a.wk||b.u-a.u);
+return `<h2>Where to start</h2><div class='card'><ol class='steps'>${r.map(x=>`<li><b>CBG ${x.c} ${C[x.c].n}</b> <span class='mut'>${x.u} units${x.wk?' · '+x.wk+' weak topic'+(x.wk>1?'s':''):''}${x.dd!==null?' · exam in '+x.dd+' days':''}</span></li>`).join('')}</ol><p class='mut'>Ranked by nearest exam date, then weak topics, then units. Set exam dates and rate your topics to keep it accurate.</p></div>`}
+const fmt=s=>pad(Math.floor(s/60))+':'+pad(s%60);
+function left(){return TM?Math.max(0,Math.round((TM.end-Date.now())/1000)):0}
+function timer(){
+const ok='Notification' in window?Notification.permission:'unsupported';
+let top;
+if(TM){const cur=M[TM.m][TM.i],br=/break/i.test(cur[0]),sec=TM.paused?TM.rem:left(),fr=sec/(TM.dur||sec||1);
+top=`<div class='mut' style='text-align:center'>${cn(TM.c)} · step ${TM.i+1} of ${M[TM.m].length}</div><div class='ring'><svg width='220' height='220' viewBox='0 0 220 220'><circle cx='110' cy='110' r='96' fill='none' stroke='var(--accbg)' stroke-width='14'/><circle id='rg' cx='110' cy='110' r='96' fill='none' stroke='${br?'#2f9e7b':'var(--acc)'}' stroke-width='14' stroke-linecap='round' stroke-dasharray='603.2' stroke-dashoffset='${603.2*fr}' style='transition:stroke-dashoffset 1s linear'/></svg><div class='tm' id='tl'>${fmt(sec)}</div></div><p style='text-align:center;margin:0'><b>${br?'☕':'🧠'} ${cur[0]}</b></p><p class='mut' style='text-align:center'>${cur[2]}</p><input value="${esc(TM.t||'')}" placeholder='Topic (logged when you finish)' oninput='TM.t=this.value;save()'><div class='chips'><button class='p' onclick='pauseTm()'>${TM.paused?'▶ Resume':'⏸ Pause'}</button><button class='g' onclick='skipTm()'>Skip step</button><button class='g' onclick='stopTm()'>End early</button></div>`}
+else top=`<p class='mut' style='margin-top:0'>Pick a course and a topic. “Everything” is not a topic.</p><label>Course</label><select id='tc'>${ac().map(c=>`<option value='${c}' ${c===String(S.lastC||'430')?'selected':''}>CBG ${c} ${C[c].n}</option>`).join('')}</select><label>Topic (logged when you finish)</label><input id='tt' placeholder='e.g. Mendelian ratios'><div class='chips'><button class='p' onclick='startTm()'>🚀 Guided session (5 + 35 + 5)</button><button class='g' onclick='startMini()'>⚡ Mini (2 + 10 + 3)</button><button class='g' onclick='startPomo()'>🍅 Pomodoro (25 / 5)</button></div><label style='display:block;margin-top:12px'>Studied away from the app? Add minutes</label><div style='display:flex;gap:8px'><input id='mm' type='number' placeholder='minutes'><button class='g' onclick='addMin()'>Add</button></div>`;
+const al=(ok==='granted'?'Notifications are on. ':ok==='denied'?'Notifications are blocked for this site. ':'')+'You always get a sound, vibration and an on-screen banner when a step ends or a planned study time starts, as long as this page is open.';
+return `<h2>Study timer</h2>${rvCard()}${alCard()}<div class='card'>${top}</div><div class='card'><b>Alerts</b><p class='mut'>${al}</p><div class='chips'>${ok==='default'?`<button class='p' onclick='askN()'>Turn on notifications</button>`:''}<button class='g' onclick='testA()'>Test alert</button></div></div>${alInfo()}`}
+function startTm(c,m,tp){c=String(c||($('#tc')&&$('#tc').value)||'430');m=m||'guide';const t=tp||($('#tt')?$('#tt').value.trim():'');S.lastC=c;TM={c,m,i:0,t,end:Date.now()+M[m][0][1]*60000,dur:M[m][0][1]*60,h:new Date().getHours(),paused:false};save();try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}go('timer')}
+function startPomo(){startTm(null,'pomo')}
+function pauseTm(){if(TM.paused){TM.end=Date.now()+TM.rem*1000;TM.paused=false}else{TM.rem=left();TM.paused=true}save();render()}
+function skipTm(){nextTm(false)}
+function askN(){try{Notification.requestPermission().then(()=>render())}catch(e){}}
+function testA(){alertMe('Test alert','This is how alerts look.')}
+function nextTm(auto){
+const p=M[TM.m][TM.i];
+if(auto&&!/break/i.test(p[0])){const t=iso(new Date());S.mins[t]=(S.mins[t]||0)+p[1];TM.sm=(TM.sm||0)+p[1]}
+TM.i++;
+if(TM.i>=M[TM.m].length){fin();return}
+const n=M[TM.m][TM.i];TM.end=Date.now()+n[1]*60000;TM.dur=n[1]*60;save();
+if(auto)alertMe(n[0]+' ('+n[1]+' min)',n[2]);
+if(V==='timer')render()}
+function fin(){
+const t=TM.rv?'':TM.t,c=TM.c;if(TM.rv)RV=TM.rv;AL={h:TM.h,m:TM.sm||0};TM=null;document.title='400L Study Planner';
+let msg=pick(['Session complete. The textbook is mildly impressed.','Done. Water. Stretch. Do not open social media.','Another session survived.']);
+if(t){const nw=lg(c,t);if(!nw)msg='Added to “'+t+'”. Its reviews already exist, so nothing new.';else msg='Logged “'+t+'”. Your day 1, 3, 7 and 30 reviews are scheduled.'}
+boom();save();alertMe('Session complete',msg);go('timer')}
+function alertMe(t,b){
+try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.15;o.frequency.value=660;o.start();o.stop(a.currentTime+.4)}catch(e){}
+try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
+try{if('Notification' in window&&Notification.permission==='granted'){const o={body:b,icon:'icon-192.png'};(navigator.serviceWorker?navigator.serviceWorker.getRegistration():Promise.resolve(null)).then(r=>r?r.showNotification(t,o):new Notification(t,o)).catch(()=>{})}}catch(e){}
+const e=$('#ts');if(e){e.innerHTML='<b>'+esc(t)+'</b><br>'+esc(b);e.style.display='block';setTimeout(()=>{e.style.display='none'},9000)}}
+function tick(){
+if(!TM||TM.paused)return;
+const l=left(),e=$('#tl');
+if(e)e.textContent=fmt(l);const g=$('#rg');if(g&&TM.dur)g.style.strokeDashoffset=603.2*(l/TM.dur);
+document.title=fmt(l)+' · 400L Study Planner';
+if(l<=0)nextTm(true)}
+function planCheck(){
+const n=new Date(),t=iso(n),hm=pad(n.getHours())+':'+pad(n.getMinutes());
+gp(n.getDay()).forEach(s=>{const k=t+s[0];if(s[0]===hm&&!S.nf[k]){S.nf[k]=1;save();alertMe('Time to study',cn(s[1])+(s[2]?'. '+s[2]:''))}})}
+const BX=[1,3,7,14,30];
+const co=()=>ac().map(c=>`<option value='${c}'>CBG ${c} ${C[c].n}</option>`).join('');
+function tv(x){TV=x;render()}
+function tools(){return `<h2>Tools</h2><div class='chips'>${[['cards','🃏 Cards'],['pqs','📚 PQs'],['notes','🗒 Notes'],['drill','📝 MCQ drill'],['blurt','🧠 Blurt']].map(x=>`<button class='chip ${TV===x[0]?'on':''}' onclick='tv("${x[0]}")'>${x[1]}</button>`).join('')}</div>${({cards,pqs,notes,drill,blurt})[TV]()}`}
+function dueCards(){const t=iso(new Date());return S.cards.filter(c=>c.due<=t)}
+function cdue(){const n=dueCards().length;return n?`<div class='card'><b>🃏 ${n} card${n>1?'s':''} due</b><button class='p' style='float:right' onclick='revGo()'>Review</button><div class='mut'>Your brain is about to forget them.</div></div>`:''}
+function revGo(){TV='cards';revStart();go('tools')}
+function wk(id){const l=S.logs.find(x=>x.id===id);startTm(l.c,null,l.t)}
+function cf(id,n){const l=S.logs.find(x=>x.id===id);l.cf=n;save();render()}
+function cards(){
+const dc=dueCards();let h;
+if(CR&&CR.q.length){const c=CR.q[0];
+h=`<div class='card' style='text-align:center'><div class='mut'>${CR.q.length} left · ${cn(c.c)} · box ${c.box}</div><h2 style='margin:12px 0'>${esc(c.f)}</h2>${CR.s?`<p>${c.b?esc(c.b):"<span class='mut'>No answer saved. Check your notes, then be honest.</span>"}</p><div class='chips' style='justify-content:center'><button class='g' onclick='rate(0)'>😵 Blank</button><button class='g' onclick='rate(1)'>😬 Almost</button><button class='p' onclick='rate(2)'>😎 Nailed it</button></div>`:`<p class='mut'>Say the answer out loud first. Thinking it does not count.</p><button class='p' onclick='CR.s=1;render()'>Show answer</button>`}</div>`}
+else h=`<div class='card'><b>${dc.length} card${dc.length===1?'':'s'} due today</b><div class='mut'>${S.cards.length?'Deck size: '+S.cards.length+'. '+(dc.length?'Your brain is about to forget these. Rude of it.':'Nothing due. Suspiciously organised.'):'No cards yet. A deck of zero cards has never helped anyone.'}</div>${dc.length?`<button class='p' style='margin-top:10px' onclick='revStart()'>Start review</button>`:''}</div>`;
+return h+`<h2>Add cards</h2><div class='card'><label>Course</label><select id='kc'>${co()}</select><label>One per line: question | answer</label><textarea id='kt' rows='5' placeholder='What does Hardy-Weinberg assume? | No selection, mutation, migration or drift; random mating; large population'></textarea><button class='p' onclick='addCards()'>Add to deck</button></div>${deckList()}`}
+function addCards(){const c=$('#kc').value,ls=$('#kt').value.split('\n').map(x=>x.trim()).filter(Boolean),t=iso(new Date());if(!ls.length)return;ls.forEach((l,i)=>{const p=l.split('|');S.cards.push({id:Date.now()+i,c,f:p[0].trim(),b:(p[1]||'').trim(),box:1,due:t})});save();say('Added '+ls.length,'They are due today. Good luck.');render()}
+function revStart(){CR={q:dueCards().sort(()=>Math.random()-.5),s:0};render()}
+function rate(r){const c=CR.q.shift(),t=iso(new Date());if(r===2){c.box=Math.min(5,c.box+1);c.due=add(t,BX[c.box-1])}else if(r===1)c.due=add(t,1);else{c.box=1;c.due=add(t,1);CR.q.push(c)}CR.s=0;if(!CR.q.length){CR=null;boom();say('Deck cleared','Come back when your brain has forgotten again.')}save();render()}
+function drill(){
+if(DR){const l=Math.max(0,DR.end-Date.now());
+return `<div class='card' style='text-align:center'><div class='mut'>${cn(DR.c)} · question ${DR.r.length+1} of ${DR.n}</div><div class='tm' id='dl' style='font-size:52px'>${fmt(Math.ceil(l/1000))}</div><div class='chips' style='justify-content:center'><button class='p' onclick='dq(1)'>✅ Right</button><button class='g' onclick='dq(-1)'>❌ Wrong</button><button class='g' onclick='dq(0)'>⏭ Skip</button></div><p class='mut'>Skipping is free. A wrong answer costs ${DR.neg}. Choose wisely.</p><button class='g' onclick='dend()'>End drill</button></div>`}
+const hist=S.drills.slice(-5).reverse().map(d=>`<div class='row' style='--h:${C[d.c].h}'><div><b>${cn(d.c)}: ${d.sc} / ${d.n}</b><small>${nice(d.d)} · ${d.ok} right, ${d.no} wrong, ${d.sk} skipped</small></div></div>`).join('');
+const res=LR?`<div class='hero'><b>${LR.sc} / ${LR.n}</b><p>${LR.ok} right, ${LR.no} wrong, ${LR.sk} skipped. Wrong answers cost you ${LR.cost} marks.${LR.no>LR.ok?' Guessing is not a strategy. Skip what you do not know.':LR.sk>LR.n/2?' You skipped over half. Brave, but marks are not given for modesty.':' Respectable. Annoyingly.'}</p></div>`:'';
+return `<h2>MCQ drill</h2>${res}<div class='card'><p class='mut' style='margin-top:0'>Do the questions in your book or PDF and tap the result of each one here. The clock and the penalty are real.</p><label>Course</label><select id='dc'>${co()}</select><label>Number of questions</label><input id='dn' type='number' value='20'><label>Seconds per question</label><input id='ds' type='number' value='60'><label>Marks lost per wrong answer</label><input id='dg' type='number' step='0.25' value='0.25'><button class='p' onclick='dstart()'>Start drill</button></div>${hist?'<h2>Recent drills</h2>'+hist:''}`}
+function dstart(){const n=Math.max(1,+$('#dn').value||20),s=Math.max(5,+$('#ds').value||60);DR={c:$('#dc').value,n,neg:Math.max(0,+$('#dg').value||0),st:Date.now(),end:Date.now()+n*s*1000,r:[]};LR=null;render()}
+function dq(v){DR.r.push(v);if(DR.r.length>=DR.n)dend();else render()}
+function dend(){if(!DR)return;const r=DR.r,ok=r.filter(x=>x===1).length,no=r.filter(x=>x===-1).length,lf=Date.now()>=DR.end?DR.n-r.length:0,sk=r.filter(x=>x===0).length+lf,n=r.length+lf,sc=Math.round((ok-no*DR.neg)*100)/100,t=iso(new Date());S.mins[t]=(S.mins[t]||0)+Math.round((Date.now()-DR.st)/60000);S.drills.push({c:DR.c,d:t,n,ok,no,sk,sc});LR={n,ok,no,sk,sc,cost:Math.round(no*DR.neg*100)/100};DR=null;save();if(ok>no)boom();render()}
+function blurt(){
+const hist=S.blurts.slice(-5).reverse().map(b=>`<div class='card'><b>${esc(b.t)}</b> <span class='mut'>CBG ${b.c} · ${nice(b.d)}</span><div>${b.r} recalled, ${b.g.length} missed (${b.p}%)</div>${b.g.length?`<small class='mut'>Gaps: ${b.g.map(esc).join('; ')}</small>`:''}</div>`).join('');
+return `<h2>Blurt checker</h2><div class='card'>${blurtT()}<p class='mut'>Close your notes. Blurt on paper for 3 minutes. Then come back and be honest.</p><label>Course</label><select id='bc'>${co()}</select><label>Topic</label><input id='bt' placeholder='e.g. Hardy-Weinberg'><label>What you recalled (one point per line)</label><textarea id='br' rows='4'></textarea><label>What you missed, from your notes (one per line)</label><textarea id='bg' rows='4'></textarea><button class='p' onclick='bsave()'>Check my blurt</button></div>${hist?'<h2>Recent blurts</h2>'+hist:''}`}
+function bsave(){const ln=id=>$(id).value.split('\n').map(x=>x.trim()).filter(Boolean),c=$('#bc').value,t=$('#bt').value.trim(),r=ln('#br'),g=ln('#bg'),d=iso(new Date());
+if(!t||!(r.length+g.length)){say('Hmm','Add a topic and at least one point. Empty blurts prove nothing.');return}
+const p=Math.round(r.length/(r.length+g.length)*100);
+let l=S.logs.find(x=>x.c===c&&x.t.toLowerCase()===t.toLowerCase());
+if(!l){l={id:Date.now(),c,t,d};S.logs.push(l)}
+l.cf=p>=90?5:p>=75?4:p>=55?3:p>=35?2:1;
+g.forEach((x,i)=>S.cards.push({id:Date.now()+i+1,c,f:t+': '+x,b:'',box:1,due:d}));
+S.blurts.push({c,t,d,r:r.length,g,p});save();
+say(p+'% recalled',g.length?g.length+' gap'+(g.length>1?'s':'')+' became flashcards. Go fix them.':'No gaps. Smug mode: allowed.');if(p>=75)boom();render()}
+setInterval(()=>{if(!DR)return;const e=$('#dl'),l=Math.max(0,DR.end-Date.now());if(e)e.textContent=fmt(Math.ceil(l/1000));if(l<=0)dend()},500);
+document.addEventListener('selectionchange',()=>{const s=String(getSelection()).trim();if(s)SEL=s});
+const lastp=q=>q.att&&q.att.length?q.att[q.att.length-1].pct:-1;
+const lines=id=>$(id).value.split('\n').map(x=>x.trim()).filter(Boolean);
+function notes(){
+const ls=S.notes.slice().reverse().map(n=>`<details class='card'><summary><b>${esc(n.t)}</b> <span class='mut'>CBG ${n.c}</span></summary><div style='white-space:pre-wrap;user-select:text;margin:10px 0'>${esc(n.x)}</div><div class='chips'><button class='p' onclick='noteCard(${n.id})'>Selection → flashcard</button><button class='g' onclick='ndel(${n.id})'>Delete</button></div><p class='mut'>Select text above, then tap the button.</p></details>`).join('');
+return `<h2>Notes shelf</h2>${ls||"<p class='mut'>No notes yet. Paste some below. Notes inside a PDF you never open cannot help you.</p>"}<div class='card'><label>Course</label><select id='nc'>${co()}</select><label>Title</label><input id='nt' placeholder='e.g. Lecture 3: Mendelian ratios'><label>Notes (paste text)</label><textarea id='nx' rows='8'></textarea><button class='p' onclick='nadd()'>Save notes</button></div>`}
+function nadd(){const t=$('#nt').value.trim(),x=$('#nx').value.trim();if(!t||!x){say('Hmm','A title and some actual notes, please.');return}S.notes.push({id:Date.now(),c:$('#nc').value,t,x});save();say('Saved','Now go and read them. Reading them is the plan.');render()}
+function ndel(id){if(confirm('Delete these notes?')){S.notes=S.notes.filter(n=>n.id!==id);save();render()}}
+function noteCard(id){const n=S.notes.find(x=>x.id===id);if(!SEL){say('Nothing selected','Select some text in the note first.');return}const f=prompt('What question does this answer?');if(!f||!f.trim())return;S.cards.push({id:Date.now(),c:n.c,f:f.trim(),b:SEL.slice(0,600),box:1,due:iso(new Date())});SEL='';save();say('Card added','Due today. Your brain will be notified.')}
+function pqs(){
+if(PR)return pr();
+const hot={};S.pqs.forEach(q=>{if(q.tp){const k=q.c+'|'+q.tp.toLowerCase();(hot[k]=hot[k]||{c:q.c,t:q.tp,n:0,y:[]}).n++;if(q.y)hot[k].y.push(q.y)}});
+const hl=Object.values(hot).filter(x=>x.n>1).sort((a,b)=>b.n-a.n).slice(0,5).map(x=>`<div class='row' style='--h:${C[x.c].h}'><div><b>${esc(x.t)}</b><small>CBG ${x.c} · asked ${x.n} times${x.y.length?' ('+x.y.map(esc).join(', ')+')':''}</small></div></div>`).join('');
+const ls=S.pqs.slice().sort((a,b)=>lastp(a)-lastp(b)).map(q=>`<div class='row' style='--h:${C[q.c].h};display:block'><b>${esc(q.q.length>90?q.q.slice(0,90)+'…':q.q)}</b><small>CBG ${q.c}${q.y?' · '+esc(q.y):''}${q.m?' · '+q.m+' marks':''}${q.tp?' · '+esc(q.tp):''} · ${q.att&&q.att.length?'last '+lastp(q)+'%':'not attempted'}</small><div class='chips'><button class='p' onclick='prStart(${q.id})'>Practise</button><button class='g' onclick='pdel(${q.id})'>Delete</button></div></div>`).join('');
+return `<h2>Past questions</h2>${hl?"<p class='mut'>Topics that keep coming back. The lecturer is not being subtle.</p>"+hl:''}${ls||"<p class='mut'>No questions yet. Add some below. Hoping they will not repeat is not a plan.</p>"}<h2>Add a past question</h2><div class='card'><label>Course</label><select id='pc'>${co()}</select><label>Question</label><textarea id='pq' rows='3'></textarea><label>Year</label><input id='py' placeholder='e.g. 2023'><label>Marks</label><input id='pm' type='number' placeholder='e.g. 10'><label>Topic (spell it the same each time or repeats will not add up)</label><input id='pt' placeholder='e.g. Mendelian inheritance'><label>Key points a good answer covers (one per line, optional now)</label><textarea id='pp' rows='4'></textarea><button class='p' onclick='padd()'>Save question</button></div>`}
+function padd(){const q=$('#pq').value.trim();if(!q){say('Hmm','A question with no question in it is just a form.');return}S.pqs.push({id:Date.now(),c:$('#pc').value,q,y:$('#py').value.trim(),m:+$('#pm').value||0,tp:$('#pt').value.trim(),pts:lines('#pp'),att:[]});save();say('Saved','Added to the bank. Now answer it.');render()}
+function pdel(id){if(confirm('Delete this question?')){S.pqs=S.pqs.filter(q=>q.id!==id);save();render()}}
+function prStart(id){const q=S.pqs.find(x=>x.id===id),m=q.m||10;PR={id,st:Date.now(),end:Date.now()+Math.max(5,Math.round(m*1.5))*60000,mode:'type',ans:'',stage:'w',up:0,tk:{}};render()}
+function pr(){const q=S.pqs.find(x=>x.id===PR.id);
+if(PR.stage==='w'){const l=Math.max(0,PR.end-Date.now());
+return `<h2>Answer it</h2><div class='card'><div class='mut'>CBG ${q.c}${q.y?' · '+esc(q.y):''}${q.m?' · '+q.m+' marks':''}</div><p><b>${esc(q.q)}</b></p><div class='tm' id='pl' style='font-size:44px;text-align:center'>${fmt(Math.ceil(l/1000))}</div><div class='chips'><button class='chip ${PR.mode==='type'?'on':''}' onclick='PR.mode="type";render()'>⌨ Type</button><button class='chip ${PR.mode==='paper'?'on':''}' onclick='PR.mode="paper";render()'>📄 Paper</button></div>${PR.mode==='type'?`<textarea id='pa' rows='9' placeholder='Write it like the examiner is watching. They are.' oninput='PR.ans=this.value'>${esc(PR.ans)}</textarea>`:"<p class='mut'>Write it on paper. Tap Done when you finish. Thinking the answer does not count.</p>"}<div class='chips'><button class='p' onclick='PR.stage="c";render()'>Done, check me</button><button class='g' onclick='PR=null;render()'>Cancel</button></div></div>`}
+const pts=q.pts||[];
+return `<h2>Check yourself</h2><div class='card'><p class='mut' style='margin-top:0'>Open your notes. Be honest. The examiner will not be.</p>${PR.ans?`<details><summary>Your answer</summary><p style='white-space:pre-wrap'>${esc(PR.ans)}</p></details>`:''}${pts.length?pts.map((p,i)=>`<label class='rv'><input type='checkbox' ${PR.tk[i]?'checked':''} onchange='PR.tk[${i}]=this.checked'><span>${esc(p)}</span></label>`).join('')+"<button class='p' onclick='prSave()'>Save result</button>":"<label>No key points saved yet. Add them from your notes, one per line.</label><textarea id='pk' rows='5'></textarea><button class='p' onclick='prPts()'>Save points</button>"}</div>`}
+function prPts(){const q=S.pqs.find(x=>x.id===PR.id),p=lines('#pk');if(!p.length)return;q.pts=p;save();render()}
+function prSave(){const q=S.pqs.find(x=>x.id===PR.id),pts=q.pts,miss=pts.filter((p,i)=>!PR.tk[i]),pct=Math.round((pts.length-miss.length)/pts.length*100),d=iso(new Date());
+q.att=q.att||[];q.att.push({d,pct,miss});
+miss.forEach((p,i)=>S.cards.push({id:Date.now()+i,c:q.c,f:'Explain: '+p,b:'',box:1,due:d}));
+S.mins[d]=(S.mins[d]||0)+Math.max(1,Math.round((Date.now()-PR.st)/60000));
+PR=null;save();say(pct+'% of the points',miss.length?miss.length+' missed point'+(miss.length>1?'s':'')+' became flashcards. Go fix them.':'Every point. Show off.');if(pct>=70)boom();render()}
+setInterval(()=>{if(!PR||PR.stage!=='w')return;const e=$('#pl'),l=Math.max(0,PR.end-Date.now());if(e)e.textContent=fmt(Math.ceil(l/1000));if(l<=0&&!PR.up){PR.up=1;alertMe('Time is up','The examiner is not sentimental. Finish your sentence.')}},1000);
+const DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const gp=d=>S.plan?(S.plan[d]||[]):(P[d]||[]);
+const sec=(t,b,o)=>`<details class='sec' ${o?'open':''}><summary>${t}</summary>${b}</details>`;
+const wkRows=w=>Object.keys(w).map(c=>`<div class='row' style='--h:${C[c].h}'><div><b>CBG ${c}</b><small>${w[c].map(esc).join(' · ')}</small></div></div>`).join('');
+function rp(){const t0=iso(new Date()),W=[];ac().forEach(c=>{const tp=(S.topics&&S.topics[c])||[];if(!tp.length)return;const e=S.exams[c]||'2027-01-25',wk=Math.max(1,Math.floor(diff(t0,add(e,-21))/7)),k=Math.ceil(tp.length/wk);tp.forEach((x,i)=>{const w=Math.min(wk-1,Math.floor(i/k));W[w]=W[w]||{};(W[w][c]=W[w][c]||[]).push(x)})});return W}
+function readNow(){const w=rp()[0];return w?wkRows(w):"<p class='mut'>Add course outlines under Courses and this fills itself in.</p>"}
+function readPlan(){const W=rp(),t0=iso(new Date());if(!W.length)return "<p class='mut'>Paste each course outline above and I will spread it over the weeks before exams. No outline, no plan. Magic is not included.</p>";return W.map((w,i)=>w?`<div class='card'><b>Week ${i+1} · from ${nice(add(t0,i*7))}</b>${wkRows(w)}</div>`:'').join('')+"<p class='mut'>The last 3 weeks before each exam are revision only: PQs, blurts and cards.</p>"}
+function tpc(c,v){S.topics=S.topics||{};S.topics[c]=v.split('\n').map(x=>x.trim()).filter(Boolean);save();render()}
+function mito(s){const od=reviews().some(x=>x.due<iso(new Date())&&!S.done[x.k]),hr=new Date().getHours();return s.today>=60?['🤩','Fully charged. I am the powerhouse of the cell. You are the powerhouse of the semester.']:s.today>0?['🙂',pick(Q.some)]:od?['😤','Overdue reviews. I am not angry. I am disappointed. Also angry.']:hr>=15?['😒',pick(Q.none)]:['😴',pick(Q.none)]}
+function mt(){const e=$('#mq');if(e)e.textContent=pick(Q.none.concat(Q.some,Q.lots,['Poke me again and I unionise.','I am a bean. I contain no study tips.']));if(Math.random()<.25)boom()}
+function nextUp(d){const n=new Date(),hm=pad(n.getHours())+':'+pad(n.getMinutes()),sl=gp(d).filter(s=>s[1]!=='all'&&s[0]>=hm)[0];
+if(sl)return `<div class='card'><div class='mut'>Next up · ${sl[0]}</div><b>${cn(sl[1])}</b><button class='p' style='float:right' onclick='startTm(${sl[1]})'>Start</button></div>`;
+const w=(rank()[0]||{}).l;return `<div class='card'><div class='mut'>Next up</div><b>${w?'Weak spot: '+esc(w.t):'Nothing planned. Pick something before the guilt does.'}</b>${w?`<button class='p' style='float:right' onclick='wk(${w.id})'>Start</button>`:''}</div>`}
+function banner(){const t=iso(new Date()),R2=reviews().filter(x=>x.due<=t&&!S.done[x.k]),r=R2.length,ov=R2.filter(x=>x.due<t).length,c=dueCards().length;let h='';
+if(r||c)h+=`<div class='warn'>⚠ Due now: ${r?r+' review'+(r>1?'s':''):''}${r&&c?' and ':''}${c?c+' card'+(c>1?'s':''):''}${ov?'. '+ov+' overdue. Your past self is waiting.':'.'}</div>`;
+if((S.logs.length||S.cards.length||S.notes.length||S.pqs.length)&&(!S.bk||diff(S.bk,t)>7))h+=`<div class='warn'>💾 ${S.bk?'Last backup was '+diff(S.bk,t)+' days ago.':'No backup yet.'} One cleared cache and it is all gone. <button onclick='go("settings")'>Back up</button></div>`;return h}
+function dl(n,m,x){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([x],{type:m}));a.download=n;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800)}
+function bk(){const o=Object.assign({},S);delete o.tm;S.bk=iso(new Date());o.bk=S.bk;save();dl('planner-backup-'+S.bk+'.json','application/json',JSON.stringify(o));say('Backup downloaded','Keep it somewhere that is not this phone.');render()}
+function restore(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.logs))throw 0;if(!confirm('Replace everything in the app with this backup?'))return;S=Object.assign({exams:{},logs:[],done:{},mins:{},nf:{},cards:[],blurts:[],drills:[],notes:[],pqs:[],topics:{},fb:[]},o);TM=null;save();alert('Restored. The app will reload now.');location.reload()}catch(e){say('That did not work','This does not look like a planner backup.')}};r.readAsText(f)}
+function ics(){const t0=iso(new Date()),E=[],dt=(d,t)=>d.replace(/-/g,'')+'T'+t.replace(':','')+'00',ev=(u,s,a,b)=>E.push('BEGIN:VEVENT','UID:'+u+'@planner','DTSTAMP:'+dt(t0,'00:00'),'DTSTART:'+a,'DTEND:'+b,'SUMMARY:'+s.replace(/[,;]/g,' '),'END:VEVENT');
+for(let i=0;i<14;i++){const d=add(t0,i);gp(new Date(d+'T00:00:00').getDay()).forEach((s,j)=>{const [h,m]=s[0].split(':').map(Number),e=h*60+m+45;ev(d+s[0]+j,'Study: '+(s[1]==='all'?'weekly review':'CBG '+s[1]),dt(d,s[0]),dt(d,pad(Math.floor(e/60)%24)+':'+pad(e%60)))})}
+reviews().filter(x=>!S.done[x.k]&&x.due>=t0&&x.due<=add(t0,30)).forEach(x=>ev(x.k,'Review: '+x.r[1]+' - '+x.log.t,dt(x.due,'08:00'),dt(x.due,'08:15')));
+Object.entries(S.exams).forEach(([c,e])=>e&&ev('ex'+c,'EXAM: CBG '+c,dt(e,'08:00'),dt(e,'10:00')));
+ev('exams','Exams start (school calendar)',dt('2027-01-25','08:00'),dt('2027-01-25','09:00'));
+dl('study-planner.ics','text/calendar','BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//planner//EN\r\n'+E.join('\r\n')+'\r\nEND:VCALENDAR');say('Calendar file ready','Open it and import it into Google Calendar.')}
+const ptxt=()=>[1,2,3,4,5,6,0].flatMap(d=>gp(d).map(s=>DN[d]+' '+s[0]+' '+s[1]+(s[2]?' '+s[2]:''))).join('\n');
+function psave(){const o={},bad=[];lines('#pp2').forEach(l=>{const m=l.match(/^(sun|mon|tue|wed|thu|fri|sat)\w*\s+(\d{1,2}):(\d{2})\s+(\d{3}|all)\s*(.*)$/i);if(!m||(m[4]!=='all'&&!C[m[4]])){bad.push(l);return}const d=DN.findIndex(x=>x.toLowerCase()===m[1].toLowerCase());(o[d]=o[d]||[]).push([pad(+m[2])+':'+m[3],m[4],m[5]])});if(bad.length){say('Could not read '+bad.length+' line'+(bad.length>1?'s':''),bad[0]);return}Object.values(o).forEach(a=>a.sort((x,y)=>x[0]<y[0]?-1:1));S.plan=o;save();say('Plan saved','Alerts use the new times from now on.');render()}
+function preset(){S.plan=null;save();render()}
+function settings(){return `<h2>Settings</h2><button class='g' onclick='go("today")'>← Back</button><h2>Backup</h2><div class='card'><p class='mut' style='margin-top:0'>Everything lives in this browser. Download a backup now and then.${S.bk?' Last one: '+nice(S.bk)+'.':''}</p><button class='p' onclick='bk()'>Download backup</button><label style='display:block;margin-top:12px'>Restore from a backup file</label><input type='file' accept='.json,application/json' onchange='restore(this)'></div><h2>Reminders</h2><div class='card'><p class='mut' style='margin-top:0'>Exports your next 14 days of study sessions, due reviews and exam dates. Import the file into Google Calendar once. Alerts then come from your calendar notification settings, even when this app is closed. Export again whenever things change.</p><button class='p' onclick='ics()'>Export calendar file</button></div><h2>Study plan times</h2><div class='card'><p class='mut' style='margin-top:0'>One session per line: day, time, course, optional note. Example: Mon 19:00 430 Start here. Use all as the course for a weekly review.</p><textarea id='pp2' rows='12'>${esc(ptxt())}</textarea><div class='chips'><button class='p' onclick='psave()'>Save plan</button><button class='g' onclick='preset()'>Reset to default</button></div></div><h2>Courses</h2><div class='card'><p class='mut' style='margin-top:0'>Your current courses, one per line: 3-digit code, name, units, Compulsory or Elective. Example: 417 Molecular Biology 3 Compulsory. Anything you remove is archived, not deleted.</p><textarea id='cc' rows='6'>${esc(ctext())}</textarea><button class='p' onclick='csave()'>Save courses</button></div><h2>Class timetable</h2><div class='card'><p class='mut' style='margin-top:0'>One class per line: day, start-end hours (24h), course, room. Example: Mon 11-13 419 S023. The course must be in the list above first.</p><textarea id='tt2' rows='12'>${esc(ttxt())}</textarea><button class='p' onclick='tsave()'>Save timetable</button></div>`}
+function openCheck(){const g=['Oh, you came back. Brave.','Mito has been waiting. Mito does not wait well.','Loading your excuses… none found.','Right. Genetics. Let us pretend we enjoy this.','Another day, another chance to disappoint nobody.'],e=$('#sg');if(e)e.textContent=pick(g);setTimeout(()=>{const s=$('#sp');if(s)s.remove()},2700);
+const t=iso(new Date()),r=reviews().filter(x=>x.due<=t&&!S.done[x.k]).length,c=dueCards().length;try{if(navigator.setAppBadge)r+c?navigator.setAppBadge(r+c):navigator.clearAppBadge()}catch(x){}
+if(r||c)setTimeout(()=>say('Due now',(r?r+' review'+(r>1?'s':''):'')+(r&&c?' and ':'')+(c?c+' card'+(c>1?'s':''):'')+'. Chop chop.'),3200)}
+const nk=x=>String(x).toLowerCase().trim();
+function ev(c,t){const k=nk(t),o=[];
+S.fb.forEach(f=>{if(f.c===c&&nk(f.t)===k&&f.sc!==null)o.push([f.d,f.sc])});
+S.blurts.forEach(b=>{if(b.c===c&&nk(b.t)===k)o.push([b.d,b.p])});
+S.pqs.forEach(q=>{if(q.c===c&&q.tp&&nk(q.tp)===k)(q.att||[]).forEach(a=>o.push([a.d,a.pct]))});
+return o.sort((a,b)=>a[0]<b[0]?-1:1)}
+function rank(){const t=iso(new Date()),od=reviews().filter(x=>x.due<t&&!S.done[x.k]),seen={},out=[];
+S.logs.forEach(l=>{const k=l.c+'|'+nk(l.t);if(seen[k])return;seen[k]=1;
+const e=ev(l.c,l.t),cv=l.cf||0,w1=cv?(5-cv)/4:.6;let sw=0,sm=0;
+e.forEach(x=>{const w=Math.pow(.5,Math.max(0,diff(x[0],t))/21);sw+=w;sm+=w*(100-x[1])});
+const miss=sw?sm/sw/100:null,n=S.pqs.filter(q=>q.c===l.c&&q.tp&&nk(q.tp)===nk(l.t)).length,ov=od.filter(x=>x.log.c===l.c&&nk(x.log.t)===nk(l.t)).length,ex=S.exams[l.c]&&S.exams[l.c]>=t?diff(t,S.exams[l.c]):null;
+const sc=((miss!==null?.65*miss+.35*w1:w1)+.08*Math.min(n,3)+.05*Math.min(ov,3))*(1+(ex!==null?Math.max(0,60-ex)/120:0)),why=[];
+if(miss!==null)why.push('average '+Math.round((1-miss)*100)+'% over '+e.length+' check'+(e.length>1?'s':''));
+why.push(cv?'confidence '+cv+'/5':'not rated');
+if(n)why.push('asked in '+n+' past question'+(n>1?'s':''));
+if(ov)why.push(ov+' overdue review'+(ov>1?'s':''));
+if(ex!==null&&ex<=60)why.push('exam in '+ex+' days');
+out.push({l,sc,why})});
+return out.sort((a,b)=>b.sc-a.sc)}
+function weak(){const r=rank().filter(x=>x.sc>.25).slice(0,5);return r.length?r.map(x=>`<div class='row' style='--h:${C[x.l.c].h}'><div><b>${esc(x.l.t)}</b><small>CBG ${x.l.c} · ${x.why.join(' · ')}</small></div><button class='g' style='margin-left:auto' onclick='wk(${x.l.id})'>Study</button></div>`).join(''):"<p class='mut'>Nothing ranks as urgent. Either you are doing well or you have not logged enough. Log some feedback to find out which.</p>"}
+function trend(l){const e=ev(l.c,l.t).slice(-5);if(e.length<2)return '';const a=e[0][1],b=e[e.length-1][1];return `<div class='mut'>Trend: ${e.map(x=>x[1]+'%').join(' → ')} ${b>a+5?'📈':b<a-5?'📉':'➡️'}</div>`}
+function fbForm(){const tops=[...new Set(S.logs.map(l=>l.t))],rc=S.fb.slice(-4).reverse().map(f=>`<div class='row' style='--h:${C[f.c].h}'><div><b>${esc(f.t)}</b><small>${esc(f.src)} · ${nice(f.d)} · ${f.sc!==null?f.sc+'%':'no score'}${f.wr.length?' · '+f.wr.length+' wrong':''}</small></div><button class='g' style='margin-left:auto' onclick='fbDel(${f.id})'>✕</button></div>`).join('');
+return `<h2>Log feedback</h2><div class='card'><p class='mut' style='margin-top:0'>From a NotebookLM quiz, a class test, a lecturer, anything. This is how I decide what needs work.</p><label>Course</label><select id='fc'>${co()}</select><label>Topic</label><input id='ft' list='ftl' placeholder='e.g. Mendelian inheritance'><datalist id='ftl'>${tops.map(t=>`<option value="${esc(t)}">`).join('')}</datalist><label>Source</label><select id='fs'><option>NotebookLM quiz</option><option>Class test</option><option>Lecturer</option><option>Self-test</option></select><label>Score (leave blank if none)</label><div style='display:flex;gap:8px'><input id='fg' type='number' placeholder='got'><input id='fo' type='number' placeholder='out of'></div><label>Questions you missed | the correct answer (one per line)</label><textarea id='fw' rows='4' placeholder='What does epistasis mean? | One gene masks the effect of another gene'></textarea><div class='chips'><button class='p' onclick='fbSave()'>Save feedback</button><button class='g' onclick='fbCopy()'>Copy prompt for NotebookLM</button></div></div>${rc?'<p class="mut">Recent feedback</p>'+rc:''}`}
+function fbCopy(){const p='Now give me my score as got/out of. Then list each question I got wrong on its own line as: the full question | the correct answer. Do not include my wrong answer. No other text.';try{navigator.clipboard.writeText(p).then(()=>say('Copied','Paste it into NotebookLM after your quiz.'))}catch(e){say('Could not copy',p)}}
+function fbSave(){const c=$('#fc').value,t=$('#ft').value.trim(),g=$('#fg').value,o=$('#fo').value,d=iso(new Date()),wr=lines('#fw').map(x=>{const p=x.split('|');return{q:p[0].trim(),a:(p[1]||'').trim()}});
+if(!t||(g===''&&!wr.length)){say('Hmm','A topic and either a score or some mistakes, please.');return}
+if(g!==''&&!(+o>0)){say('Hmm','Add the out of number too.');return}
+const sc=g!==''?Math.round(+g/+o*100):null;
+let l=S.logs.find(x=>x.c===c&&nk(x.t)===nk(t));if(!l){l={id:Date.now(),c,t,d};S.logs.push(l)}
+if(sc!==null)l.cf=sc>=90?5:sc>=75?4:sc>=55?3:sc>=35?2:1;else if(!l.cf)l.cf=wr.length>2?2:3;
+wr.forEach((w,i)=>S.cards.push({id:Date.now()+i+1,c,f:t+': '+w.q,b:w.a,box:1,due:d}));
+S.fb.push({id:Date.now(),c,t,src:$('#fs').value,d,sc,wr});save();
+say(sc!==null?sc+'% logged':'Feedback logged',wr.length?wr.length+' mistake'+(wr.length>1?'s':'')+' became flashcards. Go fix them.':'No mistakes listed. Suspiciously clean.');if(sc!==null&&sc>=75)boom();render()}
+if(S.courses){for(const k in C)delete C[k];Object.assign(C,S.courses)}
+if(S.tt){for(const k in T)delete T[k];Object.assign(T,S.tt)}
+const ac=()=>Object.keys(C).filter(c=>!(S.arch||[]).includes(c));
+let AL=null;
+const alB=h=>h<5||h>=22?'late night':h<11?'morning':h<15?'midday':h<19?'afternoon':'evening';
+const alCard=()=>AL?`<div class='card'><b>How alert were you?</b><div class='chips'><button class='g' onclick='alSave(1)'>😴 Dozing</button><button class='g' onclick='alSave(2)'>😐 Okay</button><button class='g' onclick='alSave(3)'>⚡ Sharp</button></div></div>`:'';
+function alSave(a){S.al=S.al||[];S.al.push({d:iso(new Date()),b:alB(AL.h),a,m:AL.m});AL=null;save();render()}
+function alInfo(){const n=(S.al||[]).length,g={};(S.al||[]).forEach(x=>{(g[x.b]=g[x.b]||[]).push(x.a)});const k=Object.keys(g).filter(b=>g[b].length>=2).map(b=>[b,g[b].reduce((a,c)=>a+c,0)/g[b].length,g[b].length]).sort((x,y)=>y[1]-x[1]);
+return n<6?"<p class='mut'>Rate your alertness after each session. After a few I will tell you when you study best.</p>":k.length?`<div class='card'>Best time so far: <b>${k[0][0]}</b> (${k[0][1].toFixed(1)}/3 over ${k[0][2]} sessions).${k.length>1?' Weakest: '+k[k.length-1][0]+'.':''}</div>`:''}
+function startMini(){startTm(null,'mini')}
+function addMin(){const n=+$('#mm').value;if(!(n>0)){say('Hmm','How many minutes? A number, please.');return}const t=iso(new Date()),tp=$('#tt')?$('#tt').value.trim():'',c=$('#tc').value;S.mins[t]=(S.mins[t]||0)+n;if(tp)lg(c,tp);save();say('Added '+n+' min','Paper counts. Good.');render()}
+function deckList(){const n=S.cards.length;return `<details class='sec'><summary>🗂 All cards (${n})</summary>${S.cards.slice(-40).reverse().map(k=>`<div class='row' style='--h:${(C[k.c]||{h:0}).h};display:block'><b>${esc(k.f)}</b><small>${k.b?esc(k.b.slice(0,80)):'no answer saved'} · box ${k.box}</small><div class='chips'><button class='g' onclick='cardEdit(${k.id})'>Edit</button><button class='g' onclick='cardDel(${k.id})'>Delete</button></div></div>`).join('')||"<p class='mut'>No cards.</p>"}${n>40?"<p class='mut'>Showing the latest 40.</p>":''}</details>`}
+function cardEdit(id){const k=S.cards.find(x=>x.id===id),f=prompt('Front',k.f);if(f===null)return;const b=prompt('Back',k.b);if(b===null)return;k.f=f.trim()||k.f;k.b=b.trim();save();render()}
+function cardDel(id){if(confirm('Delete this card?')){S.cards=S.cards.filter(x=>x.id!==id);CR=null;save();render()}}
+function fbDel(id){if(confirm('Delete this feedback entry? Cards already made stay.')){S.fb=S.fb.filter(f=>f.id!==id);save();render()}}
+const ctext=()=>ac().map(c=>c+' '+C[c].n+' '+C[c].u+' '+C[c].t).join('\n');
+function csave(){const ok=[],bad=[];lines('#cc').forEach(l=>{const m=l.match(/^(\d{3})\s+(.+?)\s+(\d{1,2})\s*(compulsory|elective|c|e)?$/i);if(m)ok.push(m);else bad.push(l)});
+if(bad.length||!ok.length){say('Could not read '+(bad.length||'any')+' line'+(bad.length===1?'':'s'),bad[0]||'Add at least one course.');return}
+ok.forEach(m=>{C[m[1]]={n:m[2],u:+m[3],t:m[4]&&m[4][0].toLowerCase()==='c'?'Compulsory':'Elective',h:C[m[1]]?C[m[1]].h:(Object.keys(C).length*47+265)%360}});
+S.arch=Object.keys(C).filter(k=>!ok.some(m=>m[1]===k));S.courses=JSON.parse(JSON.stringify(C));save();say('Courses saved','Anything you removed is archived, not deleted.');render()}
+const ttxt=()=>[1,2,3,4,5,6,0].flatMap(d=>(T[d]||[]).map(s=>DN[d]+' '+s[0]+'-'+s[1]+' '+s[2]+(s[3]?' '+s[3]:''))).join('\n');
+function tsave(){const o={0:[],1:[],2:[],3:[],4:[],5:[],6:[]},bad=[];lines('#tt2').forEach(l=>{const m=l.match(/^(sun|mon|tue|wed|thu|fri|sat)\w*\s+(\d{1,2})\s*-\s*(\d{1,2})\s+(\d{3})\s*(.*)$/i);if(!m||!C[m[4]]||+m[2]>=+m[3]||+m[3]>24){bad.push(l);return}o[DN.findIndex(x=>x.toLowerCase()===m[1].toLowerCase())].push([+m[2],+m[3],m[4],m[5]])});
+if(bad.length){say('Could not read '+bad.length+' line'+(bad.length>1?'s':''),bad[0]);return}for(const k in T)delete T[k];Object.assign(T,o);S.tt=JSON.parse(JSON.stringify(o));save();say('Timetable saved','Week and Today are updated.');render()}
+let BT=null,RV=null;
+const rk2=(a,b)=>(a.log.cf||3)-(b.log.cf||3)||(a.due<b.due?-1:1);
+function lg(c,t){if(S.logs.some(l=>l.c===c&&nk(l.t)===nk(t)))return false;S.logs.push({id:Date.now(),c,t,d:iso(new Date())});return true}
+function dedupe(){const seen={};let n=0;S.logs=S.logs.filter(l=>{const k=l.c+'|'+nk(l.t);if(seen[k]){if(!seen[k].cf&&l.cf)seen[k].cf=l.cf;n++;return false}seen[k]=l;return true});return n}
+const dn8=dedupe();if(dn8){save();setTimeout(()=>say('Tidied up','Merged '+dn8+' duplicate topic'+(dn8>1?'s':'')+' so each has one schedule.'),3600)}
+function startRv(k){const o=k.split(':'),l=S.logs.find(x=>x.id==o[0]),m='r'+o[1];if(!l)return;TM={c:l.c,m,i:0,t:l.t,rv:k,end:Date.now()+M[m][0][1]*60000,dur:M[m][0][1]*60,h:new Date().getHours(),paused:false};save();try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}go('timer')}
+function startWk(){TM={c:'all',m:'week',i:0,t:'',end:Date.now()+M.week[0][1]*60000,dur:M.week[0][1]*60,h:new Date().getHours(),paused:false};save();try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}go('timer')}
+function rvAsk(k){RV=k;go('timer')}
+function rvCard(){if(!RV)return '';const o=RV.split(':'),l=S.logs.find(x=>x.id==o[0]),r=R.find(x=>x[0]==o[1]);if(!l||!r){RV=null;return ''}return `<div class='card'><b>${r[1]}: ${esc(l.t)}</b><p class='mut'>How did it go?</p><div class='chips'><button class='p' onclick='rvRate(3)'>✅ Solid</button><button class='g' onclick='rvRate(2)'>😬 Shaky</button><button class='g' onclick='rvRate(1)'>😵 Lost</button></div></div>`}
+function rvRate(n){const o=RV.split(':'),id=o[0],off=+o[1],l=S.logs.find(x=>x.id==id),t=iso(new Date());S.rd=S.rd||{};
+if(n===1){S.rd[RV]=add(t,1);l.cf=Math.min(l.cf||3,2);say('Lost. Fair enough','Same review again tomorrow. It is not a punishment. It is the system.')}
+else{S.done[RV]=1;l.cf=n===3?Math.min(5,(l.cf||3)+1):Math.min(l.cf||3,3);const i=R.findIndex(r=>r[0]===off),nx=R[i+1];
+if(nx){const k2=id+':'+nx[0],orig=S.rd[k2]||add(l.d,nx[0]),c2=add(t,nx[0]-off);S.rd[k2]=c2>orig?c2:orig}
+say(n===3?'Solid':'Shaky',n===3?'Next review is on its way. Smug mode: allowed.':'Done, but this topic stays flagged.');if(n===3)boom()}
+RV=null;save();render()}
+function spread(){const t=iso(new Date()),rest=reviews().filter(x=>x.due<=t&&!S.done[x.k]).sort(rk2).slice(5);S.rd=S.rd||{};rest.forEach((x,i)=>{S.rd[x.k]=add(t,1+Math.floor(i/5))});save();say('Spread out','The rest are due over the next few days, five a day.');render()}
+function stopTm(){const p=M[TM.m][TM.i];let sm=TM.sm||0;if(!/break/i.test(p[0])){const el=Math.floor(((TM.dur||0)-(TM.paused?TM.rem:left()))/60);if(el>0){const d=iso(new Date());S.mins[d]=(S.mins[d]||0)+el;sm+=el}}
+let msg='Nothing to count yet.';if(sm>0){msg='Counted '+sm+' min.';AL={h:TM.h,m:sm};if(TM.rv)RV=TM.rv;else if(TM.t&&TM.c!=='all'){msg=lg(TM.c,TM.t)?'Logged “'+TM.t+'” and counted '+sm+' min.':'Counted '+sm+' min on “'+TM.t+'”. Its reviews already exist.'}}
+TM=null;document.title='400L Study Planner';save();say('Ended early','Stopping is fine. '+msg);if(RV)go('timer');else render()}
+function blurtT(){return BT?"<div class='tm' id='bl' style='text-align:center;font-size:44px'>"+fmt(Math.ceil(Math.max(0,BT.end-Date.now())/1000))+"</div><button class='g' onclick='BT=null;render()'>Stop</button>":"<button class='g' onclick='bstart()'>⏱ Start 3-minute blurt</button>"}
+function bstart(){BT={end:Date.now()+180000};render()}
+setInterval(()=>{if(!BT)return;const e=$('#bl'),l=Math.max(0,BT.end-Date.now());if(e)e.textContent=fmt(Math.ceil(l/1000));if(l<=0){BT=null;alertMe('Time is up','Put the pen down. Now check your notes.');if(V==='tools')render()}},1000);
+setInterval(tick,1000);setInterval(planCheck,15000);
+function theme(){const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#15121f";r.dataset.theme=d?"light":"dark"}
+function render(){$("#dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===V));$("#v").innerHTML=({today,week,timer,tools,log,courses,settings})[V]()}
+render();
+openCheck();try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(()=>{})}catch(e){}
+</script></body></html>
